@@ -1,28 +1,64 @@
 package com.rodrigo.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.enums.Prioridade;
 import com.rodrigo.helpdesk.domain.enums.Status;
 
-public class Chamado {
+@Entity
+@Table(name = "TB_CHAMADO")
+public class Chamado implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chamado_id")
 	private Integer id;
-	private LocalDate dataAbertura = LocalDate.now();
-	private LocalDate dataFechamento;
-	private Prioridade prioridade;
-	private Status status;
-	private String titulo;
-	private String observacoes;
 	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "data_abertura")
+	private LocalDate dataAbertura = LocalDate.now();
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "data_fechamento")
+	private LocalDate dataFechamento;
+	
+	@Column(nullable = false)
+	private Prioridade prioridade;
+	
+	@Column(nullable = false)
+	private Status status;
+	
+	@Column(nullable = false)
+	private String titulo;
+	
+	@Column(nullable = true)
+	private String observacoes;
+		
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
+	
+	@ManyToOne
+	@JoinColumn(name = "tecnico_id")
 	private Tecnico tecnico;
 	
 	public Chamado() {
 		super();
 	}
 
-	public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Cliente cliente,
-			Tecnico tecnico) {
+	public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Cliente cliente, Tecnico tecnico) {
 		super();
 		this.id = id;
 		this.prioridade = prioridade;

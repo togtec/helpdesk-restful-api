@@ -1,19 +1,52 @@
 package com.rodrigo.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.enums.Perfil;
 
-public abstract class Pessoa {	
+@Entity
+@Table(name = "TB_PESSOA")
+public abstract class Pessoa implements Serializable {	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "pessoa_id")
 	protected Integer id;
+	
+	@Column(nullable = false, length = 80)
 	protected String nome;
+	
+	@Column(nullable = false, unique = true, length = 11)
 	protected String cpf;
+	
+	@Column(nullable = false, unique = true, length = 80)
 	protected String email;
+	
+	@Column(nullable = false, length = 30)
 	protected String senha;
-	protected Set<Integer> perfis = new HashSet<>(); //HashSet não permite valores duplicados
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "TB_PERFIL")
+	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "data_criacao", nullable = false)
 	protected LocalDate dataCriacao = LocalDate.now();
 	
 	public Pessoa() {
