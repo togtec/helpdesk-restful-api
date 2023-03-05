@@ -27,11 +27,11 @@ public class Chamado implements Serializable {
 	private Integer id;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "data_abertura")
+	@Column(name = "data_abertura", nullable = false)
 	private LocalDate dataAbertura = LocalDate.now();
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "data_fechamento")
+	@Column(name = "data_fechamento", nullable = true)
 	private LocalDate dataFechamento;
 	
 	@Column(nullable = false)

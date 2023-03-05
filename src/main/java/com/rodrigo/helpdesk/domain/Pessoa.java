@@ -43,6 +43,7 @@ public abstract class Pessoa implements Serializable {
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "TB_PERFIL")
+	@Column(name = "perfil")
 	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
