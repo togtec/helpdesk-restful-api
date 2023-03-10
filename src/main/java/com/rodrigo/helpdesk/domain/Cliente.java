@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.rodrigo.helpdesk.domain.enums.Perfil;
 
 @Entity
-@Table(name = "TB_CLIENTE")
 public class Cliente extends Pessoa {	
 	private static final long serialVersionUID = 1L;
 	
