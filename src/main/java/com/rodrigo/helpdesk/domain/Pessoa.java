@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,6 +25,8 @@ import com.rodrigo.helpdesk.domain.enums.Perfil;
 
 @Entity
 @Table(name = "TB_PESSOA")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo")
 public abstract class Pessoa implements Serializable {	
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +38,7 @@ public abstract class Pessoa implements Serializable {
 	@Column(nullable = false, length = 80)
 	protected String nome;
 	
-	@Column(nullable = false, unique = true, length = 11)
+	@Column(nullable = false, unique = true, length = 14)
 	protected String cpf;
 	
 	@Column(nullable = false, unique = true, length = 80)
@@ -42,7 +48,7 @@ public abstract class Pessoa implements Serializable {
 	protected String senha;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "TB_PERFIL")
+	@CollectionTable(name = "TB_PERFIL", joinColumns = @JoinColumn(name="pessoa_id"))
 	@Column(name = "perfil")
 	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
 

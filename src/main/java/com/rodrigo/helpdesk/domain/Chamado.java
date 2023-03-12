@@ -40,18 +40,18 @@ public class Chamado implements Serializable {
 	@Column(nullable = false)
 	private Status status;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 80)
 	private String titulo;
 	
 	@Column(nullable = true)
 	private String observacoes;
 		
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "cliente_id", nullable = false)
 	private Cliente cliente;
 	
 	@ManyToOne
-	@JoinColumn(name = "tecnico_id")
+	@JoinColumn(name = "tecnico_id", nullable = false)
 	private Tecnico tecnico;
 	
 	public Chamado() {
