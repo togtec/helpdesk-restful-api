@@ -20,8 +20,8 @@ public class TecnicoResource {
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TecnicoDTO> findById(@PathVariable(value = "id") Integer id) {
-		Tecnico tecnico = tecnicoService.findById(id);
-		return ResponseEntity.ok().body(new TecnicoDTO(tecnico));
+		Tecnico obj = tecnicoService.findById(id);
+		return ResponseEntity.ok().body(new TecnicoDTO(obj));
 	}
 	
 }
