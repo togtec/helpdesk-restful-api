@@ -25,17 +25,21 @@ public class TecnicoDTO implements Serializable {
 
 	public TecnicoDTO() {
 		super();
+		addPerfil(Perfil.CLIENTE);
+		addPerfil(Perfil.TECNICO);
 	}
 
-	public TecnicoDTO(Tecnico tecnico) {
+	public TecnicoDTO(Tecnico obj) {
 		super();
-		this.id = tecnico.getId();
-		this.nome = tecnico.getNome();
-		this.cpf = tecnico.getCpf();
-		this.email = tecnico.getEmail();
-		this.senha = tecnico.getSenha();		
-		this.perfis = tecnico.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
-		this.dataCriacao = tecnico.getDataCriacao();
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.cpf = obj.getCpf();
+		this.email = obj.getEmail();
+		this.senha = obj.getSenha();		
+		this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+		this.dataCriacao = obj.getDataCriacao();
+		addPerfil(Perfil.CLIENTE);
+		addPerfil(Perfil.TECNICO);
 	}
 
 	public Integer getId() {
