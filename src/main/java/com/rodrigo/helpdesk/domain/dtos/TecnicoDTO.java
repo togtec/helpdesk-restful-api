@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.Tecnico;
 import com.rodrigo.helpdesk.domain.enums.Perfil;
@@ -13,10 +15,14 @@ import com.rodrigo.helpdesk.domain.enums.Perfil;
 public class TecnicoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected Integer id;	
-	protected String nome;	
-	protected String cpf;	
-	protected String email;	
+	protected Integer id;
+	@NotBlank(message = "O campo NOME é de preenchimento obrigatório!")
+	protected String nome;
+	@NotBlank(message = "O campo CPF é de preenchimento obrigatório!")
+	protected String cpf;
+	@NotBlank(message = "O campo Email é de preenchimento obrigatório!")
+	protected String email;
+	@NotBlank(message = "O campo SENHA é de preenchimento obrigatório!")
 	protected String senha;	
 	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
 	
