@@ -1,4 +1,4 @@
-package com.rodrigo.helpdesk.resources.exceptions;
+package com.rodrigo.helpdesk.controllers.errorhandling;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +13,7 @@ import com.rodrigo.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.rodrigo.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
-public class ResourceExceptionHandler {
+public class ControllerExceptionHandler {
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException ex, HttpServletRequest request) {		

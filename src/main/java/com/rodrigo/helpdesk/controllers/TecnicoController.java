@@ -1,4 +1,4 @@
-package com.rodrigo.helpdesk.resources;
+package com.rodrigo.helpdesk.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -22,7 +22,7 @@ import com.rodrigo.helpdesk.services.TecnicoService;
 
 @RestController
 @RequestMapping(value = "/tecnicos")
-public class TecnicoResource {
+public class TecnicoController {
 
 	@Autowired
 	private TecnicoService tecnicoService;

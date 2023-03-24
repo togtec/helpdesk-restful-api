@@ -1,4 +1,4 @@
-package com.rodrigo.helpdesk.resources.exceptions;
+package com.rodrigo.helpdesk.controllers.errorhandling;
 
 import java.util.ArrayList;
 import java.util.List;
