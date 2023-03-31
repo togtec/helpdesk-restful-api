@@ -16,8 +16,9 @@ import com.rodrigo.helpdesk.services.exceptions.ObjectNotFoundException;
 public class ControllerExceptionHandler {
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException ex, HttpServletRequest request) {		
-		StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), "Object Not Found", ex.getMessage(), request.getRequestURI());
+	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException ex, HttpServletRequest request) {
+		StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), 
+				"Object Not Found", ex.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
@@ -38,4 +39,5 @@ public class ControllerExceptionHandler {
 			
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
 	}
+	
 }

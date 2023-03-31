@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.Tecnico;
 import com.rodrigo.helpdesk.domain.enums.Perfil;
@@ -18,6 +20,7 @@ public class TecnicoDTO implements Serializable {
 	protected Integer id;
 	@NotBlank(message = "O campo NOME é de preenchimento obrigatório!")
 	protected String nome;
+	@CPF
 	@NotBlank(message = "O campo CPF é de preenchimento obrigatório!")
 	protected String cpf;
 	@NotBlank(message = "O campo Email é de preenchimento obrigatório!")

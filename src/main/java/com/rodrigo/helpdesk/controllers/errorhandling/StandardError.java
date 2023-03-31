@@ -1,6 +1,7 @@
 package com.rodrigo.helpdesk.controllers.errorhandling;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,8 +25,8 @@ public class StandardError implements Serializable {
 		this.path = path;
 	}
 
-	public Long getTimestamp() {
-		return timestamp;
+	public Date getTimestamp() {
+		return new Date(timestamp);
 	}
 
 	public void setTimestamp(Long timestamp) {
