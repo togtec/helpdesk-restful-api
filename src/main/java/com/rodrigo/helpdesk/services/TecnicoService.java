@@ -42,6 +42,28 @@ public class TecnicoService {
 		return tecnicoRepository.save(newObj);
 	}
 
+	public Tecnico update(Integer id, TecnicoDTO newObjDTO) {
+		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
+		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
+		newObjDTO.setId(id);
+		//se id não existe no banco, lança ObjectNotFoundException
+		Tecnico oldObj = findById(id);
+		validaCpfAndEmail(newObjDTO);
+		oldObj = new Tecnico(newObjDTO);
+		return tecnicoRepository.save(oldObj);
+	}
+	
+	public void delete(Integer id) {
+		//se id não existe no banco, lança ObjectNotFoundException
+		Tecnico obj = findById(id);
+		
+		//verifica se existem orderns de serviço em nome do técnico
+		if (obj.getChamados().size() > 0) 
+			throw new DataIntegrityViolationException("Técnico possui ordens de serviço em seu nome e não pode ser excluído!");
+		
+		tecnicoRepository.deleteById(id);		
+	}
+
 	private void validaCpfAndEmail(TecnicoDTO objDTO) {
 		Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
 		if (obj.isPresent() && obj.get().getId() != objDTO.getId())
@@ -50,16 +72,6 @@ public class TecnicoService {
 		obj = pessoaRepository.findByEmail(objDTO.getEmail());
 		if (obj.isPresent() && obj.get().getId() != objDTO.getId())
 			throw new DataIntegrityViolationException("E-mail já cadastrado no sistema!");
-	}
-
-	public Tecnico update(Integer id, TecnicoDTO objDTO) {
-		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
-		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
-		objDTO.setId(id);
-		Tecnico oldObj = findById(id);
-		validaCpfAndEmail(objDTO);
-		oldObj = new Tecnico(objDTO);
-		return tecnicoRepository.save(oldObj);
 	}
 	
 }
