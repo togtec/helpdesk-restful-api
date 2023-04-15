@@ -34,8 +34,7 @@ public class TecnicoService {
 	}
 
 	public Tecnico create(TecnicoDTO objDTO) {
-		/* vamos deixar o id nulo porque se houver um valor para id na requisição, 
-		o método save fará um update ao invés de salvar */
+		/* definimos id null pois se houver um id na requisição, o método save fará update ao invés de salvar */
 		objDTO.setId(null); 
 		validaCpfAndEmail(objDTO);
 		Tecnico newObj = new Tecnico(objDTO);

@@ -3,6 +3,9 @@ package com.rodrigo.helpdesk.domain.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.Chamado;
 
@@ -13,12 +16,18 @@ public class ChamadoDTO implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataAbertura = LocalDate.now();	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate dataFechamento;	
+	private LocalDate dataFechamento;
+	@NotNull(message = "O campo PRIORIDADE é de preenchimento obrigatório!")
 	private Integer prioridade;
+	@NotNull(message = "O campo STATUS é de preenchimento obrigatório!")
 	private Integer status;
+	@NotBlank(message = "O campo TÍTULO é de preenchimento obrigatório!")
 	private String titulo;
+	@NotBlank(message = "O campo OBSERVAÇÕES é de preenchimento obrigatório!")
 	private String observacoes;
+	@NotNull(message = "O campo CLIENTE é de preenchimento obrigatório!")
 	private Integer cliente;
+	@NotNull(message = "O campo TÉCNICO é de preenchimento obrigatório!")
 	private Integer tecnico;
 	private String nomeTecnico;
 	private String nomeCliente;
