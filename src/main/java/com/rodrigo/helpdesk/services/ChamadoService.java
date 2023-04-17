@@ -1,5 +1,6 @@
 package com.rodrigo.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,14 +43,31 @@ public class ChamadoService {
 		return repository.save(newChamado(objDTO));
 	}
 	
+	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
+		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
+		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
+		objDTO.setId(id);
+		
+		//se id não existe no banco, lança ObjectNotFoundException
+		Chamado oldObj = findById(id);
+		
+		oldObj = newChamado(objDTO);
+		return repository.save(oldObj);
+	}	
+	
 	private Chamado newChamado(ChamadoDTO objDTO) {
 		//se tecnico ou cliente não existirem, lança exceção
 		Tecnico tecnico = tecnicoService.findById(objDTO.getTecnico());
 		Cliente cliente = clienteService.findById(objDTO.getCliente());
 		
 		Chamado chamado = new Chamado();
+		
 		if (objDTO.getId() != null) { //apenas atualizar
 			chamado.setId(objDTO.getId());
+		}
+		
+		if (objDTO.getStatus().equals(2)) { //status 2 means ENCERRADO
+			chamado.setDataFechamento(LocalDate.now());
 		}
 		
 		chamado.setTecnico(tecnico);
@@ -60,4 +78,5 @@ public class ChamadoService {
 		chamado.setObservacoes(objDTO.getObservacoes());
 		return chamado;
 	}
+
 }
