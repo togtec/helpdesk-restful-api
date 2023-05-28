@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rodrigo.helpdesk.domain.Pessoa;
@@ -21,6 +22,8 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	@Autowired
+	private BCryptPasswordEncoder encoder;	
 	
 	public Cliente findById(Integer id) {
 		Optional<Cliente> obj = clienteRepository.findById(id);
@@ -36,7 +39,8 @@ public class ClienteService {
 	public Cliente create(ClienteDTO objDTO) {
 		/* vamos deixar o id nulo porque se houver um valor para id na requisição, 
 		o método save fará um update ao invés de salvar */
-		objDTO.setId(null); 
+		objDTO.setId(null);
+		objDTO.setSenha(encoder.encode(objDTO.getSenha()));
 		validaCpfAndEmail(objDTO);
 		Cliente newObj = new Cliente(objDTO);
 		return clienteRepository.save(newObj);

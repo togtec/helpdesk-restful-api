@@ -7,6 +7,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,7 +26,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {		
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();	//permite requisições POST, PUT, DELETE e acesso à console do H2 
 		http.headers().frameOptions().sameOrigin();	//permite a visualização dos paineis internos da console do H2
 		http.authorizeHttpRequests().antMatchers("/h2-console/**").permitAll(); //evita que o http.httpBasic() peça usuário e 
@@ -37,6 +39,11 @@ public class SecurityConfig {
 					
 		return http.build();
 	}
+	
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }	
 	
 //    @Bean
 //    CorsConfigurationSource corsConfigurationSource() {

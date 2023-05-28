@@ -44,7 +44,7 @@ public abstract class Pessoa implements Serializable {
 	@Column(nullable = false, unique = true, length = 80)
 	protected String email;
 	
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 60)
 	protected String senha;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
