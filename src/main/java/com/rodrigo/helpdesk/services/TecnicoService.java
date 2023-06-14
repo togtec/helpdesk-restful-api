@@ -49,6 +49,7 @@ public class TecnicoService {
 		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
 		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
 		newObjDTO.setId(id);
+		newObjDTO.setSenha(encoder.encode(newObjDTO.getSenha()));
 		//se id não existe no banco, lança ObjectNotFoundException
 		Tecnico oldObj = findById(id);
 		validaCpfAndEmail(newObjDTO);

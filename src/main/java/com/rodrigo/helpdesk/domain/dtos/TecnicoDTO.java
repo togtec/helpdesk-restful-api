@@ -6,13 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotBlank;
-
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.domain.Tecnico;
 import com.rodrigo.helpdesk.domain.enums.Perfil;
+
+import jakarta.validation.constraints.NotBlank;
 
 public class TecnicoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

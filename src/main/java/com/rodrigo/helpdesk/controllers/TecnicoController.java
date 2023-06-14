@@ -4,10 +4,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class TecnicoController {
 		return ResponseEntity.ok().body(listDTO);
 	}	
 	
+	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
 		Tecnico newObj = tecnicoService.create(objDTO);
@@ -50,6 +52,7 @@ public class TecnicoController {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<TecnicoDTO> update(@PathVariable(value = "id") Integer id,
 											 @Valid @RequestBody TecnicoDTO objDTO) {
@@ -57,6 +60,7 @@ public class TecnicoController {
 		return ResponseEntity.ok().body(new TecnicoDTO(obj));
 	}
 	
+	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<TecnicoDTO> delete(@PathVariable(value = "id") Integer id) {
 		tecnicoService.delete(id);
