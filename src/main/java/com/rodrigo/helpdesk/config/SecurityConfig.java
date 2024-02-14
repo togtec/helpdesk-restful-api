@@ -62,7 +62,7 @@ public class SecurityConfig {
 
 		http.authorizeHttpRequests((auth) -> auth			
 			.requestMatchers(PathRequest.toH2Console()).permitAll() 
-			.requestMatchers("/login").permitAll()
+			.requestMatchers("/login", "/clientes").permitAll()
 			.anyRequest().authenticated() // requisições não autenticadas são bloqueadas
 		);
 
@@ -109,4 +109,5 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+  
 }

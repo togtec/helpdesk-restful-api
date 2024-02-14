@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.rodrigo.helpdesk.domain.Pessoa;
+import com.rodrigo.helpdesk.model.Pessoa;
+import com.rodrigo.helpdesk.model.UserSS;
 import com.rodrigo.helpdesk.repositories.PessoaRepository;
-import com.rodrigo.helpdesk.security.UserSS;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -30,22 +30,3 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

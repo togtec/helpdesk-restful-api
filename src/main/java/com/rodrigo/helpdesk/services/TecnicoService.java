@@ -1,5 +1,6 @@
 package com.rodrigo.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rodrigo.helpdesk.domain.Pessoa;
-import com.rodrigo.helpdesk.domain.Tecnico;
-import com.rodrigo.helpdesk.domain.dtos.TecnicoDTO;
+import com.rodrigo.helpdesk.dtos.TecnicoRequestDTO;
+import com.rodrigo.helpdesk.enums.Perfil;
+import com.rodrigo.helpdesk.exceptions.DataIntegrityViolationException;
+import com.rodrigo.helpdesk.exceptions.ObjectNotFoundException;
+import com.rodrigo.helpdesk.model.Pessoa;
+import com.rodrigo.helpdesk.model.Tecnico;
 import com.rodrigo.helpdesk.repositories.PessoaRepository;
 import com.rodrigo.helpdesk.repositories.TecnicoRepository;
-import com.rodrigo.helpdesk.services.exceptions.DataIntegrityViolationException;
-import com.rodrigo.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class TecnicoService {
@@ -23,41 +25,31 @@ public class TecnicoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	@Autowired
-	private BCryptPasswordEncoder encoder;	
+	private BCryptPasswordEncoder encoder;
+
+
+	public Tecnico create(TecnicoRequestDTO objRequestDTO) {
+		/* id deve ser nulo - se houver um id na requisição, o método save fará um update ao invés de salvar */
+		objRequestDTO.setId(null);
+		objRequestDTO.setSenha(encoder.encode(objRequestDTO.getSenha()));
+    objRequestDTO.setDataCriacao(LocalDate.now());
+    objRequestDTO.addPerfil(Perfil.CLIENTE);
+    objRequestDTO.addPerfil(Perfil.TECNICO);
+		validaCpfAndEmail(objRequestDTO);
+		Tecnico newObj = new Tecnico(objRequestDTO);
+		return tecnicoRepository.save(newObj);
+	}
 	
-	public Tecnico findById(Integer id) {
+	public Tecnico findById(Long id) {
 		Optional<Tecnico> obj = tecnicoRepository.findById(id);
-		//return obj.orElse(null);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
-		
 	}
 
 	public List<Tecnico> findAll() {
 		return tecnicoRepository.findAll();
 	}
 
-	public Tecnico create(TecnicoDTO objDTO) {
-		/* definimos id null pois se houver um id na requisição, o método save fará update ao invés de salvar */
-		objDTO.setId(null);
-		objDTO.setSenha(encoder.encode(objDTO.getSenha()));
-		validaCpfAndEmail(objDTO);
-		Tecnico newObj = new Tecnico(objDTO);
-		return tecnicoRepository.save(newObj);
-	}
-
-	public Tecnico update(Integer id, TecnicoDTO newObjDTO) {
-		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
-		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
-		newObjDTO.setId(id);
-		newObjDTO.setSenha(encoder.encode(newObjDTO.getSenha()));
-		//se id não existe no banco, lança ObjectNotFoundException
-		Tecnico oldObj = findById(id);
-		validaCpfAndEmail(newObjDTO);
-		oldObj = new Tecnico(newObjDTO);
-		return tecnicoRepository.save(oldObj);
-	}
-	
-	public void delete(Integer id) {
+	public void delete(Long id) {
 		//se id não existe no banco, lança ObjectNotFoundException
 		Tecnico obj = findById(id);
 		
@@ -66,9 +58,21 @@ public class TecnicoService {
 			throw new DataIntegrityViolationException("Técnico possui ordens de serviço em seu nome e não pode ser excluído!");
 		
 		tecnicoRepository.deleteById(id);		
-	}
+	}  
 
-	private void validaCpfAndEmail(TecnicoDTO objDTO) {
+	public Tecnico update(Long id, TecnicoRequestDTO newObjDTO) {
+		//define o id da url evitando falha de segurança caso haja outro id no objeto que vem no corpo da requisiação
+		newObjDTO.setId(id);
+		newObjDTO.setSenha(encoder.encode(newObjDTO.getSenha()));
+		//se id não existe no banco, lança ObjectNotFoundException
+		Tecnico oldObj = findById(id);
+    newObjDTO.setDataCriacao(oldObj.getDataCriacao());
+		validaCpfAndEmail(newObjDTO);
+		oldObj = new Tecnico(newObjDTO);
+		return tecnicoRepository.save(oldObj);
+	}
+	
+	private void validaCpfAndEmail(TecnicoRequestDTO objDTO) {
 		Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
 		if (obj.isPresent() && obj.get().getId() != objDTO.getId())
 			throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");

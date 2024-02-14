@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rodrigo.helpdesk.domain.dtos.LoginRequestDTO;
+import com.rodrigo.helpdesk.dtos.LoginRequestDTO;
 import com.rodrigo.helpdesk.services.TokenService;
 
 @RestController

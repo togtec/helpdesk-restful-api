@@ -1,56 +1,56 @@
 package com.rodrigo.helpdesk.services;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rodrigo.helpdesk.domain.Chamado;
-import com.rodrigo.helpdesk.domain.Cliente;
-import com.rodrigo.helpdesk.domain.Tecnico;
-import com.rodrigo.helpdesk.domain.enums.Perfil;
-import com.rodrigo.helpdesk.domain.enums.Prioridade;
-import com.rodrigo.helpdesk.domain.enums.Status;
-import com.rodrigo.helpdesk.repositories.ChamadoRepository;
-import com.rodrigo.helpdesk.repositories.ClienteRepository;
-import com.rodrigo.helpdesk.repositories.TecnicoRepository;
+import com.rodrigo.helpdesk.dtos.ChamadoDTO;
+import com.rodrigo.helpdesk.dtos.ClienteRequestDTO;
+import com.rodrigo.helpdesk.dtos.TecnicoRequestDTO;
+import com.rodrigo.helpdesk.enums.Perfil;
+import com.rodrigo.helpdesk.enums.Prioridade;
+import com.rodrigo.helpdesk.enums.Status;
+import com.rodrigo.helpdesk.model.Chamado;
+import com.rodrigo.helpdesk.model.Cliente;
+import com.rodrigo.helpdesk.model.Tecnico;
 
 @Service
 public class DBService {
-	@Autowired
-	private TecnicoRepository tecnicoRepository;	
-	@Autowired
-	private ClienteRepository clienteRepository;	
-	@Autowired
-	private ChamadoRepository chamadoRepository;
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+
+  @Autowired
+  private TecnicoService tecnicoService;
+  @Autowired
+  private ClienteService clienteService;
+  @Autowired
+  private ChamadoService chamadoService;
 	
 	
 	public void instanciaDB() {
-		Tecnico tec1 = new Tecnico(null, "Valdir Cezar", "550.482.150-95", "valdir@mail.com", encoder.encode("admin"));
-		tec1.addPerfil(Perfil.ADMIN);
-		Tecnico tec2 = new Tecnico(null, "Richard Stallman", "903.347.070-56", "stallman@mail.com", encoder.encode("admin"));
-		Tecnico tec3 = new Tecnico(null, "Claude Elwood Shannon", "271.068.470-54", "shannon@mail.com", encoder.encode("admin"));
-		Tecnico tec4 = new Tecnico(null, "Tim Berners-Lee", "162.720.120-39", "lee@mail.com", encoder.encode("admin"));
-		Tecnico tec5 = new Tecnico(null, "Linus Torvalds", "778.556.170-27", "linus@mail.com", encoder.encode("admin"));
-		
-		Cliente cli1 = new Cliente(null, "Albert Einstein", "111.661.890-74", "einstein@mail.com", encoder.encode("admin"));
-		Cliente cli2 = new Cliente(null, "Marie Curie", "322.429.140-06", "curie@mail.com", encoder.encode("admin"));
-		Cliente cli3 = new Cliente(null, "Charles Darwin", "792.043.830-62", "darwin@mail.com", encoder.encode("admin"));
-		Cliente cli4 = new Cliente(null, "Stephen Hawking", "177.409.680-30", "hawking@mail.com", encoder.encode("admin"));
-		Cliente cli5 = new Cliente(null, "Max Planck", "081.399.300-83", "planck@mail.com", encoder.encode("admin"));
+    TecnicoRequestDTO tec1DTO = new TecnicoRequestDTO(new Tecnico(null, "Rodrigo Tognetta", "550.482.150-95", "tog@gmail.com", "1234"));
+    tec1DTO.addPerfil(Perfil.ADMIN);
+    Tecnico tec1 = tecnicoService.create(tec1DTO);
+    Tecnico tec2 = tecnicoService.create(new TecnicoRequestDTO(new Tecnico(null, "Priscila Lopez", "903.347.070-56", "prilopez@gmail.com", "1234")));
+    Tecnico tec3 = tecnicoService.create(new TecnicoRequestDTO(new Tecnico(null, "Alexandre Sanches", "271.068.470-54", "alesanches@gmail.com", "1234")));
+    tecnicoService.create(new TecnicoRequestDTO(new Tecnico(null, "Mara Cruz", "162.720.120-39", "maracruz@gmail.com", "1234")));
+    tecnicoService.create(new TecnicoRequestDTO(new Tecnico(null, "Alfredo Costa", "778.556.170-27", "alfcosta@gmail.com", "1234")));
+
+    Cliente cli1 = clienteService.create(new ClienteRequestDTO(new Cliente(null, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "1234")));
+    Cliente cli2 = clienteService.create(new ClienteRequestDTO(new Cliente(null, "Flavio Sampaio", "322.429.140-06", "flaviosp@bol.com.br", "1234")));
+    Cliente cli3 = clienteService.create(new ClienteRequestDTO(new Cliente(null, "Igor Batista", "792.043.830-62", "ibatista@bol.com.br", "1234")));
+    clienteService.create(new ClienteRequestDTO(new Cliente(null, "Paulo Cintra", "177.409.680-30", "paulo.cintra@globo.com", "1234")));
+    clienteService.create(new ClienteRequestDTO(new Cliente(null, "Sabrina Coral", "081.399.300-83", "sabcoral@gmail.com", "1234")));
 				
-		Chamado c1 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Chamado 1", "Teste chamado 1", cli1, tec1);
-		Chamado c2 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Chamado 2", "Teste chamado 2", cli2, tec1);
-		Chamado c3 = new Chamado(null, Prioridade.BAIXA, Status.ENCERRADO, "Chamado 3", "Teste chamado 3", cli3, tec2);
-		Chamado c4 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Chamado 4", "Teste chamado 4", cli3, tec3);
-		Chamado c5 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Chamado 5", "Teste chamado 5", cli1, tec2);
-		Chamado c6 = new Chamado(null, Prioridade.BAIXA, Status.ENCERRADO, "Chamado 7", "Teste chamado 6", cli5, tec1);
-				
-		tecnicoRepository.saveAll(Arrays.asList(tec1, tec2, tec3, tec4, tec5));
-		clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3, cli4, cli5));
-		chamadoRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6));
+		Chamado cham1 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Título chamado 1", "Observações chamado 1", cli1, tec1);
+		Chamado cham2 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Título chamado 2", "Observações chamado 2", cli2, tec1);
+		Chamado cham3 = new Chamado(null, Prioridade.BAIXA, Status.ENCERRADO, "Título chamado 3", "Observações chamado 3", cli3, tec2);
+		Chamado cham4 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Título chamado 4", "Observações chamado 4", cli3, tec3);
+		Chamado cham5 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Título chamado 5", "Observações chamado 5", cli1, tec2);
+		Chamado cham6 = new Chamado(null, Prioridade.BAIXA, Status.ENCERRADO, "Título chamado 6", "Observações chamado 6", cli2, tec1);
+    chamadoService.create(new ChamadoDTO(cham1));
+    chamadoService.create(new ChamadoDTO(cham2));
+    chamadoService.create(new ChamadoDTO(cham3));
+    chamadoService.create(new ChamadoDTO(cham4));
+    chamadoService.create(new ChamadoDTO(cham5));
+    chamadoService.create(new ChamadoDTO(cham6));
 	}
+
 }

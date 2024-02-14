@@ -7,58 +7,59 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rodrigo.helpdesk.domain.Chamado;
-import com.rodrigo.helpdesk.domain.Cliente;
-import com.rodrigo.helpdesk.domain.Tecnico;
-import com.rodrigo.helpdesk.domain.dtos.ChamadoDTO;
-import com.rodrigo.helpdesk.domain.enums.Prioridade;
-import com.rodrigo.helpdesk.domain.enums.Status;
+import com.rodrigo.helpdesk.dtos.ChamadoDTO;
+import com.rodrigo.helpdesk.enums.Prioridade;
+import com.rodrigo.helpdesk.enums.Status;
+import com.rodrigo.helpdesk.exceptions.ObjectNotFoundException;
+import com.rodrigo.helpdesk.model.Chamado;
+import com.rodrigo.helpdesk.model.Cliente;
+import com.rodrigo.helpdesk.model.Tecnico;
 import com.rodrigo.helpdesk.repositories.ChamadoRepository;
-import com.rodrigo.helpdesk.services.exceptions.ObjectNotFoundException;
-
-import jakarta.validation.Valid;
 
 @Service
 public class ChamadoService {
-	
+
 	@Autowired
-	private ChamadoRepository repository;
+	private ChamadoRepository chamadoRepository;
 	@Autowired
 	private TecnicoService tecnicoService;
 	@Autowired
 	private ClienteService clienteService;
+
+
+
+  public Chamado create(ChamadoDTO objDTO) {
+    /* id deve ser nulo - se houver um id na requisição, o método save fará um update ao invés de salvar */
+		objDTO.setId(null);
+    objDTO.setDataAbertura(LocalDate.now());
+		return chamadoRepository.save(newChamado(objDTO));
+	}
 	
-	public Chamado findById(Integer id) {
-		Optional<Chamado> obj = repository.findById(id);
+	public Chamado findById(Long id) {
+		Optional<Chamado> obj = chamadoRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! ID:" + id));
 	}
 	
 	public List<Chamado> findAll() {
-		return repository.findAll();
-	}
-
-	public Chamado create(@Valid ChamadoDTO objDTO) {
-		/* definimos id null pois se houver um id na requisição, o método save fará update ao invés de salvar */
-		objDTO.setId(null);
-		return repository.save(newChamado(objDTO));
+		return chamadoRepository.findAll();
 	}
 	
-	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
-		//é necessário definir como id o id que veio como parâmetro, pois é possível vir um id na url
-		//e outro no objeto que vem no corpo da requisição; isso gera uma falha de segurança que deve ser evitada
+	public Chamado update(Long id, ChamadoDTO objDTO) {
+		//define o id da url evitando falha de segurança caso haja outro id no objeto que vem no corpo da requisiação
 		objDTO.setId(id);
 		
 		//se id não existe no banco, lança ObjectNotFoundException
 		Chamado oldObj = findById(id);
+    objDTO.setDataAbertura(oldObj.getDataAbertura());
 		
 		oldObj = newChamado(objDTO);
-		return repository.save(oldObj);
+		return chamadoRepository.save(oldObj);
 	}	
 	
 	private Chamado newChamado(ChamadoDTO objDTO) {
 		//se tecnico ou cliente não existirem, lança exceção
+    Cliente cliente = clienteService.findById(objDTO.getCliente());
 		Tecnico tecnico = tecnicoService.findById(objDTO.getTecnico());
-		Cliente cliente = clienteService.findById(objDTO.getCliente());
 		
 		Chamado chamado = new Chamado();
 		
