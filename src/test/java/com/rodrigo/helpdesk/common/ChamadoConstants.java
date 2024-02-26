@@ -8,6 +8,7 @@ import static com.rodrigo.helpdesk.common.ClienteConstants.CLIENTE;
 import static com.rodrigo.helpdesk.common.TecnicoContants.TECNICO;
 
 public class ChamadoConstants {
-  public static final Chamado CHAMADO = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Novo chamado", "Observações do novo Chamado", CLIENTE, TECNICO);
-  public static final Chamado INVALID_CHAMADO = new Chamado(null, null, null, "", "", null, null);
+    public static final Chamado CHAMADO = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Novo chamado",
+            "Observações do novo Chamado", CLIENTE, TECNICO);
+    public static final Chamado INVALID_CHAMADO = new Chamado(null, null, null, "", "", null, null);
 }

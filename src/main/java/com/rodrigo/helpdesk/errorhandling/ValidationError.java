@@ -4,28 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationError extends StandardError {
-	private static final long serialVersionUID = 1L;
-	
-	private List<FieldMessage> errors = new ArrayList<>();
+    private static final long serialVersionUID = 1L;
 
-	
-	
-	public ValidationError() {
-		super();
-	}
+    private List<FieldMessage> errors = new ArrayList<>();
 
-	public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
-		super(timestamp, status, error, message, path);
-	}
+    public ValidationError() {
+        super();
+    }
 
-	
-	
-	public List<FieldMessage> getErrors() {
-		return errors;
-	}
+    public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
+        super(timestamp, status, error, message, path);
+    }
 
-	public void addError(String fieldName, String defaultMessage) {
-		this.errors.add(new FieldMessage(fieldName, defaultMessage));
-	}
-	
+    public List<FieldMessage> getErrors() {
+        return errors;
+    }
+
+    public void addError(String fieldName, String defaultMessage) {
+        this.errors.add(new FieldMessage(fieldName, defaultMessage));
+    }
+
 }

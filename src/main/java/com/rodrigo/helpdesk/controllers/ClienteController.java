@@ -28,45 +28,46 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/clientes")
 public class ClienteController {
 
-	@Autowired
-	private ClienteService clienteService;
+    @Autowired
+    private ClienteService clienteService;
 
+    @PostMapping
+    public ResponseEntity<ClienteResponseDTO> create(@Valid @RequestBody ClienteRequestDTO objRequestDTO) {
+        Cliente newObj = clienteService.create(objRequestDTO);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(new ClienteResponseDTO(newObj));
+    }
 
-	@PostMapping
-	public ResponseEntity<ClienteResponseDTO> create(@Valid @RequestBody ClienteRequestDTO objRequestDTO) {
-		Cliente newObj = clienteService.create(objRequestDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();		
-		return ResponseEntity.created(location).body(new ClienteResponseDTO(newObj));
-	}
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ClienteResponseDTO> findById(@PathVariable(value = "id") Long id) {
+        Cliente obj = clienteService.findById(id);
+        return ResponseEntity.ok().body(new ClienteResponseDTO(obj));
+    }
 
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<ClienteResponseDTO> findById(@PathVariable(value = "id") Long id) {
-		Cliente obj = clienteService.findById(id);
-		return ResponseEntity.ok().body(new ClienteResponseDTO(obj));
-	}
-	
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
-	@GetMapping
-	public ResponseEntity<List<ClienteResponseDTO>> findAll() {
-		List<Cliente> list = clienteService.findAll();
-		List<ClienteResponseDTO> listResponseDTO = list.stream().map(obj -> new ClienteResponseDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listResponseDTO);
-	}	
-	
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
-	@DeleteMapping(value = "/{id}")
-  public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
-		clienteService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<ClienteResponseDTO> update(@PathVariable(value = "id") Long id,
-											 @Valid @RequestBody ClienteRequestDTO objRequestDTO) {
-		Cliente obj = clienteService.update(id, objRequestDTO); 
-		return ResponseEntity.ok().body(new ClienteResponseDTO(obj));
-	}
-	
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @GetMapping
+    public ResponseEntity<List<ClienteResponseDTO>> findAll() {
+        List<Cliente> list = clienteService.findAll();
+        List<ClienteResponseDTO> listResponseDTO = list.stream().map(obj -> new ClienteResponseDTO(obj))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(listResponseDTO);
+    }
+
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        clienteService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ClienteResponseDTO> update(@PathVariable(value = "id") Long id,
+            @Valid @RequestBody ClienteRequestDTO objRequestDTO) {
+        Cliente obj = clienteService.update(id, objRequestDTO);
+        return ResponseEntity.ok().body(new ClienteResponseDTO(obj));
+    }
+
 }

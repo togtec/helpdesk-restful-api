@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TokenService {
-	@Value("${jwt.expiration}")
-	private Long expiration; //recebe o valor declarado em appliction.properties
+    @Value("${jwt.expiration}")
+    private Long expiration; // recebe o valor declarado em appliction.properties
 
     private final JwtEncoder encoder;
 
@@ -25,7 +25,7 @@ public class TokenService {
         this.encoder = encoder;
     }
 
-	public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -37,7 +37,7 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-				//System.out.println(claims.getClaims());
+        // System.out.println(claims.getClaims());
         var encoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS512).build(), claims);
         return this.encoder.encode(encoderParameters).getTokenValue();
     }

@@ -12,17 +12,18 @@ import com.rodrigo.helpdesk.services.TokenService;
 
 @RestController
 public class AuthController {
-	private final TokenService tokenService;
-	private final AuthenticationManager authenticationManager;	
+    private final TokenService tokenService;
+    private final AuthenticationManager authenticationManager;
 
-	public AuthController(TokenService tokenService, AuthenticationManager authenticationManager) {
-		this.tokenService = tokenService;
-		this.authenticationManager = authenticationManager;
-	}
+    public AuthController(TokenService tokenService, AuthenticationManager authenticationManager) {
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
+    }
 
-	@PostMapping("/login")
-	public String token(@RequestBody LoginRequestDTO userLogin) {
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
-		return tokenService.generateToken(authentication);
-	}
+    @PostMapping("/login")
+    public String token(@RequestBody LoginRequestDTO userLogin) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
+        return tokenService.generateToken(authentication);
+    }
 }

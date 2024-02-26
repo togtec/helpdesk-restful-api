@@ -28,46 +28,47 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/tecnicos")
 public class TecnicoController {
 
-	@Autowired
-	private TecnicoService tecnicoService;
+    @Autowired
+    private TecnicoService tecnicoService;
 
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    @PostMapping
+    public ResponseEntity<TecnicoResponseDTO> create(@Valid @RequestBody TecnicoRequestDTO objRequestDTO) {
+        Tecnico newObj = tecnicoService.create(objRequestDTO);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(new TecnicoResponseDTO(newObj));
+    }
 
-	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-	@PostMapping
-	public ResponseEntity<TecnicoResponseDTO> create(@Valid @RequestBody TecnicoRequestDTO objRequestDTO) {
-		Tecnico newObj = tecnicoService.create(objRequestDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
-    return ResponseEntity.created(location).body(new TecnicoResponseDTO(newObj));    
-	}
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TecnicoResponseDTO> findById(@PathVariable(value = "id") Long id) {
+        Tecnico obj = tecnicoService.findById(id);
+        return ResponseEntity.ok().body(new TecnicoResponseDTO(obj));
+    }
 
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<TecnicoResponseDTO> findById(@PathVariable(value = "id") Long id) {
-		Tecnico obj = tecnicoService.findById(id);
-		return ResponseEntity.ok().body(new TecnicoResponseDTO(obj));
-	}
-	
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
-	@GetMapping
-	public ResponseEntity<List<TecnicoResponseDTO>> findAll() {
-		List<Tecnico> list = tecnicoService.findAll();
-		List<TecnicoResponseDTO> listResponseDTO = list.stream().map(obj -> new TecnicoResponseDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listResponseDTO);
-	}	
-	
-	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
-		tecnicoService.delete(id);
-		return ResponseEntity.noContent().build();
-	}  
-	
-	@PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<TecnicoResponseDTO> update(@PathVariable(value = "id") Long id,
-											 @Valid @RequestBody TecnicoRequestDTO objRequestDTO) {
-		Tecnico obj = tecnicoService.update(id, objRequestDTO); 
-		return ResponseEntity.ok().body(new TecnicoResponseDTO(obj));
-	}
-	
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @GetMapping
+    public ResponseEntity<List<TecnicoResponseDTO>> findAll() {
+        List<Tecnico> list = tecnicoService.findAll();
+        List<TecnicoResponseDTO> listResponseDTO = list.stream().map(obj -> new TecnicoResponseDTO(obj))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(listResponseDTO);
+    }
+
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        tecnicoService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TecnicoResponseDTO> update(@PathVariable(value = "id") Long id,
+            @Valid @RequestBody TecnicoRequestDTO objRequestDTO) {
+        Tecnico obj = tecnicoService.update(id, objRequestDTO);
+        return ResponseEntity.ok().body(new TecnicoResponseDTO(obj));
+    }
+
 }

@@ -26,39 +26,39 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/chamados")
 public class ChamadoController {
 
-	@Autowired
-	private ChamadoService chamadoService;
+    @Autowired
+    private ChamadoService chamadoService;
 
-  
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
-	@PostMapping
-	public ResponseEntity<ChamadoDTO> create(@Valid @RequestBody ChamadoDTO objDTO) {
-		Chamado obj = chamadoService.create(objDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-    return ResponseEntity.created(location).body(new ChamadoDTO(obj));
-	}
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @PostMapping
+    public ResponseEntity<ChamadoDTO> create(@Valid @RequestBody ChamadoDTO objDTO) {
+        Chamado obj = chamadoService.create(objDTO);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(new ChamadoDTO(obj));
+    }
 
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<ChamadoDTO> findById(@PathVariable(value = "id") Long id) {
-		Chamado obj = chamadoService.findById(id);
-		return ResponseEntity.ok().body(new ChamadoDTO(obj));
-	}
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_CLIENTE')")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ChamadoDTO> findById(@PathVariable(value = "id") Long id) {
+        Chamado obj = chamadoService.findById(id);
+        return ResponseEntity.ok().body(new ChamadoDTO(obj));
+    }
 
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
-	@GetMapping
-	public ResponseEntity<List<ChamadoDTO>> findAll() {
-		List<Chamado> list = chamadoService.findAll();
-		List<ChamadoDTO> listDTO = list.stream().map(obj -> new ChamadoDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
-	}
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @GetMapping
+    public ResponseEntity<List<ChamadoDTO>> findAll() {
+        List<Chamado> list = chamadoService.findAll();
+        List<ChamadoDTO> listDTO = list.stream().map(obj -> new ChamadoDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
+    }
 
-  @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<ChamadoDTO> update(@PathVariable(value = "id") Long id,
-			                                 @Valid @RequestBody ChamadoDTO objDTO) {
-		Chamado obj = chamadoService.update(id, objDTO);
-		return ResponseEntity.ok().body(new ChamadoDTO(obj));
-	}
-	
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_TECNICO')")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ChamadoDTO> update(@PathVariable(value = "id") Long id,
+            @Valid @RequestBody ChamadoDTO objDTO) {
+        Chamado obj = chamadoService.update(id, objDTO);
+        return ResponseEntity.ok().body(new ChamadoDTO(obj));
+    }
+
 }

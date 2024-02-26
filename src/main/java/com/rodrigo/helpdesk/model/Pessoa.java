@@ -26,143 +26,143 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "TB_PESSOA")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
 public abstract class Pessoa implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "pessoa_id")
-	protected Long id;
-	
-  @NotEmpty
-	@Column(nullable = false, length = 80)
-	protected String nome;
-	
-  @NotEmpty
-	@Column(nullable = false, unique = true, length = 14)
-	protected String cpf;
-	
-  @NotEmpty
-	@Column(nullable = false, unique = true, length = 80)
-	protected String email;
-	  
-  @NotEmpty
-	@Column(nullable = false, length = 60)
-	protected String senha;
-	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "TB_PERFIL", joinColumns = @JoinColumn(name="pessoa_id"))
-	@Column(name = "perfil")
-	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
-  
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "data_criacao", nullable = false)
-	protected LocalDate dataCriacao = LocalDate.now();
-	
-	public Pessoa() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	public Pessoa(Long id, String nome, String cpf, String email, String senha) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.email = email;
-		this.senha = senha;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pessoa_id")
+    protected Long id;
 
-	public Long getId() {
-		return id;
-	}
+    @NotEmpty
+    @Column(nullable = false, length = 80)
+    protected String nome;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @NotEmpty
+    @Column(nullable = false, unique = true, length = 14)
+    protected String cpf;
 
-	public String getNome() {
-		return nome;
-	}
+    @NotEmpty
+    @Column(nullable = false, unique = true, length = 80)
+    protected String email;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    @NotEmpty
+    @Column(nullable = false, length = 60)
+    protected String senha;
 
-	public String getCpf() {
-		return cpf;
-	}
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "TB_PERFIL", joinColumns = @JoinColumn(name = "pessoa_id"))
+    @Column(name = "perfil")
+    protected Set<Integer> perfis = new HashSet<>(); // HashSet por não permitir valores duplicados
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "data_criacao", nullable = false)
+    protected LocalDate dataCriacao = LocalDate.now();
 
-	public String getEmail() {
-		return email;
-	}
+    public Pessoa() {
+        super();
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Pessoa(Long id, String nome, String cpf, String email, String senha) {
+        super();
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+    }
 
-	public String getSenha() {
-		return senha;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void resetPerfis() {
-		this.perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public Set<Perfil> getPerfis() {
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void addPerfil(Perfil perfil) {
-		this.perfis.add(perfil.getCodigo());
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
-	public LocalDate getDataCriacao() {
-		return dataCriacao;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setDataCriacao(LocalDate dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
-				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-	
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void resetPerfis() {
+        this.perfis = new HashSet<>(); // HashSet por não permitir valores duplicados
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil.getCodigo());
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Pessoa other = (Pessoa) obj;
+        if (cpf == null) {
+            if (other.cpf != null)
+                return false;
+        } else if (!cpf.equals(other.cpf))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
 }

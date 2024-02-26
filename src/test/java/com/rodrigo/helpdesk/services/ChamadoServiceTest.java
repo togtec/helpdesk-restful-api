@@ -27,107 +27,117 @@ import com.rodrigo.helpdesk.repositories.ChamadoRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class ChamadoServiceTest {
-  @InjectMocks
-  private ChamadoService chamadoService;
+    @InjectMocks
+    private ChamadoService chamadoService;
 
-  @Mock private ChamadoRepository chamadoRepository;
-  @Mock private TecnicoService tecnicoService;
-  @Mock private ClienteService clienteService;
+    @Mock
+    private ChamadoRepository chamadoRepository;
+    @Mock
+    private TecnicoService tecnicoService;
+    @Mock
+    private ClienteService clienteService;
 
     @Test
     public void createChamado_WithValidData_ReturnsChamado() {
-      Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
-      Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
-      Chamado chamado = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Novo chamado", "Observações do novo Chamado", cliente, tecnico);
+        Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
+        Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
+        Chamado chamado = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Novo chamado",
+                "Observações do novo Chamado", cliente, tecnico);
 
-      when(clienteService.findById(1L)).thenReturn(cliente);
-      when(tecnicoService.findById(2L)).thenReturn(tecnico);
-      when(chamadoRepository.save(chamado)).thenReturn(chamado);      
+        when(clienteService.findById(1L)).thenReturn(cliente);
+        when(tecnicoService.findById(2L)).thenReturn(tecnico);
+        when(chamadoRepository.save(chamado)).thenReturn(chamado);
 
-      Chamado sut =  chamadoService.create(new ChamadoDTO(chamado));
+        Chamado sut = chamadoService.create(new ChamadoDTO(chamado));
 
-      assertThat(sut).isEqualTo(chamado);
-  }
+        assertThat(sut).isEqualTo(chamado);
+    }
 
-  @Test
-  public void createChamado_withInvalidData_throwsException() {
-    Chamado chamadoIvalido = new Chamado(null, null, null, "", "", null, null);
-    
-    assertThatThrownBy(() -> chamadoService.create(new ChamadoDTO(chamadoIvalido))).isInstanceOf(RuntimeException.class);
-  }
+    @Test
+    public void createChamado_withInvalidData_throwsException() {
+        Chamado chamadoIvalido = new Chamado(null, null, null, "", "", null, null);
 
-  @Test
-  public void findChamado_ByExistingId_ReturnsChamado() {
-    when(chamadoRepository.findById(1L)).thenReturn(Optional.of(CHAMADO));
+        assertThatThrownBy(() -> chamadoService.create(new ChamadoDTO(chamadoIvalido)))
+                .isInstanceOf(RuntimeException.class);
+    }
 
-    Chamado sut = chamadoService.findById(1L);
+    @Test
+    public void findChamado_ByExistingId_ReturnsChamado() {
+        when(chamadoRepository.findById(1L)).thenReturn(Optional.of(CHAMADO));
 
-    assertThat(sut).isEqualTo(CHAMADO);
-  }
+        Chamado sut = chamadoService.findById(1L);
 
-  @Test
-  public void findChamado_ByNotExistingId_ThrowsException() {
-    when(chamadoRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
+        assertThat(sut).isEqualTo(CHAMADO);
+    }
 
-    assertThatThrownBy(() -> chamadoService.findById(99L)).isInstanceOf(ObjectNotFoundException.class);
-  }
+    @Test
+    public void findChamado_ByNotExistingId_ThrowsException() {
+        when(chamadoRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
 
-  @Test
-  public void findAll_ReturnsAllChamados() {
-    List<Chamado> chamados = new ArrayList<>() {
-      {
-        add(CHAMADO);
-      }
-    };    
-    when(chamadoRepository.findAll()).thenReturn(chamados);
+        assertThatThrownBy(() -> chamadoService.findById(99L)).isInstanceOf(ObjectNotFoundException.class);
+    }
 
-    List<Chamado> sut = chamadoService.findAll();
+    @Test
+    public void findAll_ReturnsAllChamados() {
+        List<Chamado> chamados = new ArrayList<>() {
+            {
+                add(CHAMADO);
+            }
+        };
+        when(chamadoRepository.findAll()).thenReturn(chamados);
 
-    assertThat(sut).isNotEmpty();
-    assertThat(sut).hasSize(1);
-    assertThat(sut.get(0)).isEqualTo(CHAMADO);
-  }
+        List<Chamado> sut = chamadoService.findAll();
 
-  @Test
-  public void findAll_ReturnsNoChamado() {
-    when(chamadoRepository.findAll()).thenReturn(Collections.emptyList());
+        assertThat(sut).isNotEmpty();
+        assertThat(sut).hasSize(1);
+        assertThat(sut.get(0)).isEqualTo(CHAMADO);
+    }
 
-    List<Chamado> sut = chamadoService.findAll();
+    @Test
+    public void findAll_ReturnsNoChamado() {
+        when(chamadoRepository.findAll()).thenReturn(Collections.emptyList());
 
-    assertThat(sut).isEmpty();
-  }
+        List<Chamado> sut = chamadoService.findAll();
 
-  @Test
-  public void updateChamado_withValidData_RetursChamado() {
-    Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
-    Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
-    Chamado chamado = new Chamado(3L, Prioridade.BAIXA, Status.ABERTO, "chamado existente", "Observações do Chamado", cliente, tecnico);
-    Chamado chamadoModificado = new Chamado(3L, Prioridade.BAIXA, Status.ENCERRADO, "chamado existente", "Chamdo encerrado", cliente, tecnico);
+        assertThat(sut).isEmpty();
+    }
 
-    when(chamadoRepository.findById(3L)).thenReturn(Optional.of(chamado));
-    when(chamadoRepository.save(chamadoModificado)).thenReturn(chamadoModificado);
+    @Test
+    public void updateChamado_withValidData_RetursChamado() {
+        Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
+        Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
+        Chamado chamado = new Chamado(3L, Prioridade.BAIXA, Status.ABERTO, "chamado existente",
+                "Observações do Chamado", cliente, tecnico);
+        Chamado chamadoModificado = new Chamado(3L, Prioridade.BAIXA, Status.ENCERRADO, "chamado existente",
+                "Chamdo encerrado", cliente, tecnico);
 
-    Chamado sut = chamadoService.update(3L, new ChamadoDTO(chamadoModificado));
+        when(chamadoRepository.findById(3L)).thenReturn(Optional.of(chamado));
+        when(chamadoRepository.save(chamadoModificado)).thenReturn(chamadoModificado);
 
-    assertThat(sut).isEqualTo(chamadoModificado);
-  }
+        Chamado sut = chamadoService.update(3L, new ChamadoDTO(chamadoModificado));
 
-  @Test
-  public void updateCliente_withInvalidData_ThrowsException() {
-    Chamado chamadoIvalido = new Chamado(3L, null, null, "", "", null, null);
+        assertThat(sut).isEqualTo(chamadoModificado);
+    }
 
-    assertThatThrownBy(() -> chamadoService.update(3L, new ChamadoDTO(chamadoIvalido))).isInstanceOf(RuntimeException.class);
-  }
+    @Test
+    public void updateCliente_withInvalidData_ThrowsException() {
+        Chamado chamadoIvalido = new Chamado(3L, null, null, "", "", null, null);
 
-  @Test
-  public void updateCliente_withInvalidID_ThrowsException() {
-    Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
-    Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
-    Chamado chamadoModificado = new Chamado(3L, Prioridade.BAIXA, Status.ENCERRADO, "chamado existente", "Chamdo encerrado", cliente, tecnico);
+        assertThatThrownBy(() -> chamadoService.update(3L, new ChamadoDTO(chamadoIvalido)))
+                .isInstanceOf(RuntimeException.class);
+    }
 
-    when(chamadoRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
+    @Test
+    public void updateCliente_withInvalidID_ThrowsException() {
+        Cliente cliente = new Cliente(1L, "Alessandra Lima", "111.661.890-74", "alelima@gmail.com", "password");
+        Tecnico tecnico = new Tecnico(2L, "Rodrigo Tognetta", "550.482.150-95", "tog@mail.com", "password");
+        Chamado chamadoModificado = new Chamado(3L, Prioridade.BAIXA, Status.ENCERRADO, "chamado existente",
+                "Chamdo encerrado", cliente, tecnico);
 
-    assertThatThrownBy(() -> chamadoService.update(99L, new ChamadoDTO(chamadoModificado))).isInstanceOf(RuntimeException.class);
-  }
-  
+        when(chamadoRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
+
+        assertThatThrownBy(() -> chamadoService.update(99L, new ChamadoDTO(chamadoModificado)))
+                .isInstanceOf(RuntimeException.class);
+    }
+
 }

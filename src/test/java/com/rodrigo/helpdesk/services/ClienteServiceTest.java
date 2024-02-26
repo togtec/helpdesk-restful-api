@@ -32,129 +32,139 @@ import jakarta.validation.ConstraintViolationException;
 
 @ExtendWith(MockitoExtension.class)
 public class ClienteServiceTest {
-  @InjectMocks
-  private ClienteService clienteService;
+    @InjectMocks
+    private ClienteService clienteService;
 
-  @Mock private ClienteRepository clienteRepository;
-  @Mock private PessoaRepository pessoaRepository;
-  @Mock private BCryptPasswordEncoder encoder;
+    @Mock
+    private ClienteRepository clienteRepository;
+    @Mock
+    private PessoaRepository pessoaRepository;
+    @Mock
+    private BCryptPasswordEncoder encoder;
 
-  @Test
-  public void createCliente_WithValidData_ReturnsCliente() {
-    when(clienteRepository.save(CLIENTE)).thenReturn(CLIENTE);
+    @Test
+    public void createCliente_WithValidData_ReturnsCliente() {
+        when(clienteRepository.save(CLIENTE)).thenReturn(CLIENTE);
 
-    Cliente sut = clienteService.create(new ClienteRequestDTO(CLIENTE));
+        Cliente sut = clienteService.create(new ClienteRequestDTO(CLIENTE));
 
-    assertThat(sut).isEqualTo(CLIENTE);
-  }
+        assertThat(sut).isEqualTo(CLIENTE);
+    }
 
-  @Test
-  public void createCliente_WithInvalidData_ThrowsException() {
-    when(clienteRepository.save(INVALID_CLIENTE)).thenThrow(ConstraintViolationException.class);
+    @Test
+    public void createCliente_WithInvalidData_ThrowsException() {
+        when(clienteRepository.save(INVALID_CLIENTE)).thenThrow(ConstraintViolationException.class);
 
-    assertThatThrownBy(() -> clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE))).isInstanceOf(RuntimeException.class);
-  }
+        assertThatThrownBy(() -> clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE)))
+                .isInstanceOf(RuntimeException.class);
+    }
 
-  @Test
-  public void createCliente_WithExistingCpfOrExistingEmail_ThrowsException() {
-    when(clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE))).thenThrow(DataIntegrityViolationException.class);
+    @Test
+    public void createCliente_WithExistingCpfOrExistingEmail_ThrowsException() {
+        when(clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE)))
+                .thenThrow(DataIntegrityViolationException.class);
 
-    assertThatThrownBy(() -> clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE))).isInstanceOf(RuntimeException.class);
-  }
+        assertThatThrownBy(() -> clienteService.create(new ClienteRequestDTO(INVALID_CLIENTE)))
+                .isInstanceOf(RuntimeException.class);
+    }
 
-  @Test
-  public void findCliente_ByExistingId_ReturnsCliente() {
-    when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
+    @Test
+    public void findCliente_ByExistingId_ReturnsCliente() {
+        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
 
-    Cliente sut = clienteService.findById(1L);
+        Cliente sut = clienteService.findById(1L);
 
-    assertThat(sut).isEqualTo(CLIENTE);
-  }
+        assertThat(sut).isEqualTo(CLIENTE);
+    }
 
-  @Test
-  public void findCliente_ByNotExistingId_ThrowsException() {
-    when(clienteRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
+    @Test
+    public void findCliente_ByNotExistingId_ThrowsException() {
+        when(clienteRepository.findById(99L)).thenThrow(ObjectNotFoundException.class);
 
-    assertThatThrownBy(() -> clienteService.findById(99L)).isInstanceOf(ObjectNotFoundException.class);
-  }
+        assertThatThrownBy(() -> clienteService.findById(99L)).isInstanceOf(ObjectNotFoundException.class);
+    }
 
-  @Test
-  public void findAll_ReturnsAllClientes() {
-    List<Cliente> clientes = new ArrayList<>() {
-      {
-        add(CLIENTE);
-      }
-    };    
-    when(clienteRepository.findAll()).thenReturn(clientes);
+    @Test
+    public void findAll_ReturnsAllClientes() {
+        List<Cliente> clientes = new ArrayList<>() {
+            {
+                add(CLIENTE);
+            }
+        };
+        when(clienteRepository.findAll()).thenReturn(clientes);
 
-    List<Cliente> sut = clienteService.findAll();
+        List<Cliente> sut = clienteService.findAll();
 
-    assertThat(sut).isNotEmpty();
-    assertThat(sut).hasSize(1);
-    assertThat(sut.get(0)).isEqualTo(CLIENTE);
-  }
+        assertThat(sut).isNotEmpty();
+        assertThat(sut).hasSize(1);
+        assertThat(sut.get(0)).isEqualTo(CLIENTE);
+    }
 
-  @Test
-  public void findAll_ReturnsNoCliente() {
-    when(clienteRepository.findAll()).thenReturn(Collections.emptyList());
+    @Test
+    public void findAll_ReturnsNoCliente() {
+        when(clienteRepository.findAll()).thenReturn(Collections.emptyList());
 
-    List<Cliente> sut = clienteService.findAll();
+        List<Cliente> sut = clienteService.findAll();
 
-    assertThat(sut).isEmpty();    
-  }
-  
-  @Test
-  public void deleteCliente_WithExistingId_doesNotThrowAnyException() {
-    when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
+        assertThat(sut).isEmpty();
+    }
 
-    assertThatCode(() -> clienteService.delete(1L)).doesNotThrowAnyException();
-  }
+    @Test
+    public void deleteCliente_WithExistingId_doesNotThrowAnyException() {
+        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
 
-  @Test
-  public void deleteCliente_WithNotExistingId_ThrowsException() {
-    assertThatThrownBy(() -> clienteService.delete(99L)).isInstanceOf(ObjectNotFoundException.class);
-  }
+        assertThatCode(() -> clienteService.delete(1L)).doesNotThrowAnyException();
+    }
 
-  @Test
-  public void deleteCliente_WithExistingServiceOrder_ThrowsException() {
-    when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
-    
-    doThrow(new DataIntegrityViolationException("Cliente possui ordens de serviço em seu nome e não pode ser excluído!")).when(clienteRepository).deleteById(anyLong());
+    @Test
+    public void deleteCliente_WithNotExistingId_ThrowsException() {
+        assertThatThrownBy(() -> clienteService.delete(99L)).isInstanceOf(ObjectNotFoundException.class);
+    }
 
-    assertThatThrownBy(() -> clienteService.delete(1L)).isInstanceOf(DataIntegrityViolationException.class);
-  }
-  
-  @Test
-  public void updateCliente_withValidData_RetursCliente() {
-    Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
-    Cliente clienteModificado = new Cliente(1L, "modificado", "523.213.260-18", "nome@email.com", "password");    
-    when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-    when(clienteRepository.save(clienteModificado)).thenReturn(clienteModificado);
+    @Test
+    public void deleteCliente_WithExistingServiceOrder_ThrowsException() {
+        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(CLIENTE));
 
-    Cliente sut = clienteService.update(1L, new ClienteRequestDTO(clienteModificado));
+        doThrow(new DataIntegrityViolationException(
+                "Cliente possui ordens de serviço em seu nome e não pode ser excluído!")).when(clienteRepository)
+                .deleteById(anyLong());
 
-    assertThat(sut).isEqualTo(clienteModificado);
-    assertThat(sut).isEqualTo(cliente); //esse teste falha se clienteModificado receber um novo CPF
-  }
+        assertThatThrownBy(() -> clienteService.delete(1L)).isInstanceOf(DataIntegrityViolationException.class);
+    }
 
-  @Test
-  public void updateCliente_withInvalidData_ThrowsException() {
-    Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
-    Cliente clienteInvalido = new Cliente(null, "", "", "", "");
-    when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-    when(clienteRepository.save(clienteInvalido)).thenThrow(ConstraintViolationException.class);
+    @Test
+    public void updateCliente_withValidData_RetursCliente() {
+        Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
+        Cliente clienteModificado = new Cliente(1L, "modificado", "523.213.260-18", "nome@email.com", "password");
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(clienteRepository.save(clienteModificado)).thenReturn(clienteModificado);
 
-    assertThatThrownBy(() -> clienteService.update(1L, new ClienteRequestDTO(clienteInvalido))).isInstanceOf(RuntimeException.class);
-  }
+        Cliente sut = clienteService.update(1L, new ClienteRequestDTO(clienteModificado));
 
-  @Test
-  public void updateCliente_withCpfOrEmailFromOtherPerson_ThrowsException() {
-    Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
-    Cliente clienteModificado = new Cliente(1L, "nome", "177.409.680-30", "paulo.cintra@globo.com", "password");
-    when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-    when(clienteRepository.save(clienteModificado)).thenThrow(DataIntegrityViolationException.class);
+        assertThat(sut).isEqualTo(clienteModificado);
+        assertThat(sut).isEqualTo(cliente); // esse teste falha se clienteModificado receber um novo CPF
+    }
 
-    assertThatThrownBy(() -> clienteService.update(1L, new ClienteRequestDTO(clienteModificado))).isInstanceOf(RuntimeException.class);
-  }
+    @Test
+    public void updateCliente_withInvalidData_ThrowsException() {
+        Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
+        Cliente clienteInvalido = new Cliente(null, "", "", "", "");
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(clienteRepository.save(clienteInvalido)).thenThrow(ConstraintViolationException.class);
+
+        assertThatThrownBy(() -> clienteService.update(1L, new ClienteRequestDTO(clienteInvalido)))
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    public void updateCliente_withCpfOrEmailFromOtherPerson_ThrowsException() {
+        Cliente cliente = new Cliente(1L, "nome", "523.213.260-18", "nome@email.com", "password");
+        Cliente clienteModificado = new Cliente(1L, "nome", "177.409.680-30", "paulo.cintra@globo.com", "password");
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(clienteRepository.save(clienteModificado)).thenThrow(DataIntegrityViolationException.class);
+
+        assertThatThrownBy(() -> clienteService.update(1L, new ClienteRequestDTO(clienteModificado)))
+                .isInstanceOf(RuntimeException.class);
+    }
 
 }

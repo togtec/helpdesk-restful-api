@@ -15,96 +15,96 @@ import com.rodrigo.helpdesk.model.Tecnico;
 import jakarta.validation.constraints.NotBlank;
 
 public class TecnicoRequestDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected Long id;
-	@NotBlank(message = "O campo NOME é de preenchimento obrigatório!")
-	protected String nome;
-	@CPF
-	@NotBlank(message = "O campo CPF é de preenchimento obrigatório!")
-	protected String cpf;
-	@NotBlank(message = "O campo Email é de preenchimento obrigatório!")
-	protected String email;
-	@NotBlank(message = "O campo SENHA é de preenchimento obrigatório!")
-	protected String senha;	
-	protected Set<Integer> perfis = new HashSet<>(); //HashSet por não permitir valores duplicados
-	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-  protected LocalDate dataCriacao;
+    protected Long id;
+    @NotBlank(message = "O campo NOME é de preenchimento obrigatório!")
+    protected String nome;
+    @CPF
+    @NotBlank(message = "O campo CPF é de preenchimento obrigatório!")
+    protected String cpf;
+    @NotBlank(message = "O campo Email é de preenchimento obrigatório!")
+    protected String email;
+    @NotBlank(message = "O campo SENHA é de preenchimento obrigatório!")
+    protected String senha;
+    protected Set<Integer> perfis = new HashSet<>(); // HashSet por não permitir valores duplicados
 
-	public TecnicoRequestDTO() {
-		super();
-		addPerfil(Perfil.CLIENTE);
-		addPerfil(Perfil.TECNICO);
-	}
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    protected LocalDate dataCriacao;
 
-	public TecnicoRequestDTO(Tecnico obj) {
-		super();
-		this.id = obj.getId();
-		this.nome = obj.getNome();
-		this.cpf = obj.getCpf();
-		this.email = obj.getEmail();
-		this.senha = obj.getSenha();		
-		this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
-		this.dataCriacao = obj.getDataCriacao();
-		addPerfil(Perfil.CLIENTE);
-		addPerfil(Perfil.TECNICO);
-	}
+    public TecnicoRequestDTO() {
+        super();
+        addPerfil(Perfil.CLIENTE);
+        addPerfil(Perfil.TECNICO);
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public TecnicoRequestDTO(Tecnico obj) {
+        super();
+        this.id = obj.getId();
+        this.nome = obj.getNome();
+        this.cpf = obj.getCpf();
+        this.email = obj.getEmail();
+        this.senha = obj.getSenha();
+        this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+        this.dataCriacao = obj.getDataCriacao();
+        addPerfil(Perfil.CLIENTE);
+        addPerfil(Perfil.TECNICO);
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getCpf() {
-		return cpf;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getSenha() {
-		return senha;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public String getSenha() {
+        return senha;
+    }
 
-	public Set<Perfil> getPerfis() {
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
-	}
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
-	public void addPerfil(Perfil perfil) {
-		this.perfis.add(perfil.getCodigo());
-	}
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
 
-	public LocalDate getDataCriacao() {
-		return dataCriacao;
-	}
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil.getCodigo());
+    }
 
-	public void setDataCriacao(LocalDate dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-	
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
 }

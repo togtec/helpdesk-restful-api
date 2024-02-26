@@ -10,142 +10,142 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rodrigo.helpdesk.model.Chamado;
 
 public class ChamadoDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private Long id;	
-	
-	@JsonFormat(pattern = "dd/MM/yyyy")	
-  private LocalDate dataAbertura;
-	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate dataFechamento;
-	
-	@NotNull(message = "O campo PRIORIDADE é de preenchimento obrigatório!")	
-	private Integer prioridade;
-	
-	@NotNull(message = "O campo STATUS é de preenchimento obrigatório!")	
-	private Integer status;
-	
-	@NotBlank(message = "O campo TÍTULO é de preenchimento obrigatório!")	
-	private String titulo;
-	
-	@NotBlank(message = "O campo OBSERVAÇÕES é de preenchimento obrigatório!")	
-	private String observacoes;
-	
-	@NotNull(message = "O campo CLIENTE é de preenchimento obrigatório!")	
-	private Long cliente;
-	
-	@NotNull(message = "O campo TÉCNICO é de preenchimento obrigatório!")	
-	private Long tecnico;
-	
-	private String nomeTecnico;
-	private String nomeCliente;
-	
-	public ChamadoDTO() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	public ChamadoDTO(Chamado obj) {
-		super();
-		this.id = obj.getId();
-		this.dataAbertura = obj.getDataAbertura();
-		this.dataFechamento = obj.getDataFechamento();
-		this.prioridade = obj.getPrioridade().getCodigo();
-		this.status = obj.getStatus().getCodigo();
-		this.titulo = obj.getTitulo();
-		this.observacoes = obj.getObservacoes();
-		this.cliente = obj.getCliente().getId();
-		this.tecnico = obj.getTecnico().getId();
-		this.nomeTecnico = obj.getTecnico().getNome();
-		this.nomeCliente = obj.getCliente().getNome();
-	}
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataAbertura;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataFechamento;
 
-	public LocalDate getDataAbertura() {
-		return dataAbertura;
-	}
+    @NotNull(message = "O campo PRIORIDADE é de preenchimento obrigatório!")
+    private Integer prioridade;
 
-	public void setDataAbertura(LocalDate dataAbertura) {
-		this.dataAbertura = dataAbertura;
-	}
+    @NotNull(message = "O campo STATUS é de preenchimento obrigatório!")
+    private Integer status;
 
-	public LocalDate getDataFechamento() {
-		return dataFechamento;
-	}
+    @NotBlank(message = "O campo TÍTULO é de preenchimento obrigatório!")
+    private String titulo;
 
-	public void setDataFechamento(LocalDate dataFechamento) {
-		this.dataFechamento = dataFechamento;
-	}
+    @NotBlank(message = "O campo OBSERVAÇÕES é de preenchimento obrigatório!")
+    private String observacoes;
 
-	public Integer getPrioridade() {
-		return prioridade;
-	}
+    @NotNull(message = "O campo CLIENTE é de preenchimento obrigatório!")
+    private Long cliente;
 
-	public void setPrioridade(Integer prioridade) {
-		this.prioridade = prioridade;
-	}
+    @NotNull(message = "O campo TÉCNICO é de preenchimento obrigatório!")
+    private Long tecnico;
 
-	public Integer getStatus() {
-		return status;
-	}
+    private String nomeTecnico;
+    private String nomeCliente;
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public ChamadoDTO() {
+        super();
+    }
 
-	public String getTitulo() {
-		return titulo;
-	}
+    public ChamadoDTO(Chamado obj) {
+        super();
+        this.id = obj.getId();
+        this.dataAbertura = obj.getDataAbertura();
+        this.dataFechamento = obj.getDataFechamento();
+        this.prioridade = obj.getPrioridade().getCodigo();
+        this.status = obj.getStatus().getCodigo();
+        this.titulo = obj.getTitulo();
+        this.observacoes = obj.getObservacoes();
+        this.cliente = obj.getCliente().getId();
+        this.tecnico = obj.getTecnico().getId();
+        this.nomeTecnico = obj.getTecnico().getNome();
+        this.nomeCliente = obj.getCliente().getNome();
+    }
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getObservacoes() {
-		return observacoes;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setObservacoes(String observacoes) {
-		this.observacoes = observacoes;
-	}
+    public LocalDate getDataAbertura() {
+        return dataAbertura;
+    }
 
-	public Long getCliente() {
-		return cliente;
-	}
+    public void setDataAbertura(LocalDate dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
 
-	public void setCliente(Long cliente) {
-		this.cliente = cliente;
-	}
+    public LocalDate getDataFechamento() {
+        return dataFechamento;
+    }
 
-	public Long getTecnico() {
-		return tecnico;
-	}
+    public void setDataFechamento(LocalDate dataFechamento) {
+        this.dataFechamento = dataFechamento;
+    }
 
-	public void setTecnico(Long tecnico) {
-		this.tecnico = tecnico;
-	}
+    public Integer getPrioridade() {
+        return prioridade;
+    }
 
-	public String getNomeTecnico() {
-		return nomeTecnico;
-	}
+    public void setPrioridade(Integer prioridade) {
+        this.prioridade = prioridade;
+    }
 
-	public void setNomeTecnico(String nomeTecnico) {
-		this.nomeTecnico = nomeTecnico;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public String getNomeCliente() {
-		return nomeCliente;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public void setNomeCliente(String nomeCliente) {
-		this.nomeCliente = nomeCliente;
-	}
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public Long getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Long cliente) {
+        this.cliente = cliente;
+    }
+
+    public Long getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(Long tecnico) {
+        this.tecnico = tecnico;
+    }
+
+    public String getNomeTecnico() {
+        return nomeTecnico;
+    }
+
+    public void setNomeTecnico(String nomeTecnico) {
+        this.nomeTecnico = nomeTecnico;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
 
 }

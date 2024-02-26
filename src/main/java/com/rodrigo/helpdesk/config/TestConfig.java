@@ -11,11 +11,11 @@ import com.rodrigo.helpdesk.services.DBService;
 @Profile("test")
 public class TestConfig {
 
-	@Autowired
-	private DBService dbService;
-	
-	@Bean
-	void instanciaDB() {
-		this.dbService.instanciaDB();
-	}
+    @Autowired
+    private DBService dbService;
+
+    @Bean
+    void instanciaDB() {
+        this.dbService.instanciaDB();
+    }
 }
