@@ -13,7 +13,7 @@ import com.rodrigo.helpdesk.exceptions.DataIntegrityViolationException;
 import com.rodrigo.helpdesk.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ExceptionHandlerController {
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> handleObjectNotFoundException(ObjectNotFoundException ex,
