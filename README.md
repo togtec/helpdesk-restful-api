@@ -14,33 +14,42 @@ Além dos **perfis de usuário** a aplicação possui dois **perfis de inicializ
 O projeto possui **testes de unidade** detalhados, além de uma **carga inicial de dados de teste** que permitem facilmente testar no **Postman**, assim que a aplicação é inicializada.
 
 Para maiores informações, visite a página oficial do projeto: <br>
-<https://togtec.dev.br/projetos/forum-gamification/resumo.php>
+<https://togtec.dev.br/projetos/helpdesk-restful-api/resumo.php>
 
 ## Tecnologias
   * Java SE (17)
   * Spring Boot 3
   * Maven
   * JPA + Hibernate 
-  * H2 (perfil de de inicialização **test**)
-  * MySQL (perfil de de inicialização **dev**)
+  * H2 (perfil de inicialização **test**)
+  * MySQL (perfil de inicialização **dev**)
   * JUnit 5 + Mockito (testes)
   
 ## IDE  
   * Visual Studio Code
 
-## Captura de tela
+## Diagrama de Cenário de Teste
 <p align="center">
-  <img src="doc/img/img-004-home-Tatiana-Alcantara.png" alt="Home usuário Tatiana Alcantara">
+  <img src="doc/img/img-006-cliente-update.jpg" alt="Diagrama de Cenário de Teste Cliente Update">
 </p>
 
 Ver galeria completa de imagens em: <br>
-<https://togtec.dev.br/projetos/forum-gamification/imagens.php>
+<https://togtec.dev.br/projetos/helpdesk-restful-api/imagens.php>
+
+## Tratamento de Exceção
+A HelpDesk RESTful API é uma joia do tratamento de exceção, que em caso de erro informa o **código de retorno, o tipo do erro, a descrição do erro e os atributos preenchidos de forma inválida**:
+<p align="center">
+  <img src="doc/img/tratamento-de-excecao.jpg" alt="Exemplo Tratamento de Exceção">
+</p>
 
 ## Funcionalidades
-1. Visitante acessa o sistema
-    - Navega na lista de fóruns
-    - Navega na lista de tópicos
-    - Navega na lista de comentários
+1. Cliente
+    - Cliente efetua seu cadastro no sistema.
+    - Cliente efetua login.
+    - Cliente consulta suas informações.
+    - Cliente atualiza suas informações.
+    - Cliente exclui suas informações.
+    - Cliente consulta Chamados.
 2. Visitante cria uma conta (define login, e-mail, nome e senha)    
 3. Visitante efetua login como usuário (cadastra **tópicos** e **comentários**)
     - Ganha 10 pontos por tópico cadastrado
