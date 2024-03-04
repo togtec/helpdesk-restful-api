@@ -21,8 +21,8 @@ Para maiores informações, visite a página oficial do projeto: <br>
   * Spring Boot 3
   * Maven
   * JPA + Hibernate 
-  * H2 (perfil de inicialização **test**)
-  * MySQL (perfil de inicialização **dev**)
+  * H2 (no perfil de inicialização **test**)
+  * MySQL (no perfil de inicialização **dev**)
   * JUnit 5 + Mockito (testes)
   
 ## IDE  
@@ -43,48 +43,27 @@ A HelpDesk RESTful API é uma joia do tratamento de exceção, que em caso de er
 </p>
 
 ## Funcionalidades
-1. Cliente
-    - Cliente efetua seu cadastro no sistema.
-    - Cliente efetua login.
-    - Cliente consulta suas informações.
-    - Cliente atualiza suas informações.
-    - Cliente exclui suas informações.
-    - Cliente consulta Chamados.
-2. Visitante cria uma conta (define login, e-mail, nome e senha)    
-3. Visitante efetua login como usuário (cadastra **tópicos** e **comentários**)
-    - Ganha 10 pontos por tópico cadastrado
-    - Ganha 3 pontos por comentário cadastrado
-4. Visitante efetua login como administrador (cadastra **fóruns**, **tópicos** e **comentários**)
-    - Ganha 10 pontos por tópico cadastrado
-    - Ganha 3 pontos por comentário cadastrado
-5. Usuário/administrador acessa o ranking para comparar sua posição em relação aos demais
-6. Usuário/administrador edita nome e e-mail
-7. Usuário/administrador redefine senha
-8. Usuário/administrador efetua logout
+- Cliente
+    - Efetua cadastro no sistema.
+    - Efetua login.
+    - Consulta Cliente.
+    - Atualiza Cliente.
+    - Exclui Cliente.
+    - Consulta Chamado.    
+- Técnico
+    - Efetua login.
+    - Consulta Técnico.
+    - Consulta lista de Clientes.
+    - Cria Chamado.
+    - Consulta lista de Chamados.
+    - Atualiza Chamado.
+- Administrador
+    - Efetua login.
+    - Cadastra Técnico.
+    - Atualiza Técnico.
+    - Exclui Técnico.
 
 ## Executando o código localmente
-1. Instalar o Servidor de Aplicação JEE **Apache TomCat**
-2. Instalar a IDE Eclipse (escolher a oção: **Eclipse IDE for Enterprise Java and Web Developers**)
-3. **Integrar** a IDE Eclipse ao Servidor de Aplicação Apache TomCat
-4. Fazer o **download** do projeto no repositório git
-5. **Importar** o projeto no Eclipse
-6. **Atualizar** as dependências Mavem do Projeto
-7. **Adicionar** o projeto ao Servidor de Aplicação TomCat
-9. Baixar manualmente a dependência **chromedriver.exe** (WebDriver para o navegador Google Chrome — Será utilizada para rodar o teste **E2E** com **Selenium Web Driver**)
-    - **obs1:** Escolher a versão do chromedriver compatível com a versão do navagador Google Chrome instalada em sua máquina
-    - **obs2:** Armazenar o arquivo chromedriver.exe na pasta: D:\softDev\libraries\WebDriver\bin
-10. Instalar o Banco de Dados **PostgreSQL**
-11. Instalar o **pgAdmin** (plataforma de administração e gerenciamento para o banco de dados PostgreSQL)
-12. Dentro do pgAdmin executar:
-    - O script para a criação da **ROLE** ita
-    - O script para a criação do **DATABASE** forum_gamification_db
-    - O script para a criação das **TABLEs**
-    - O script para a criação das **SEQUENCEs**
-    - **obs1:** Os scripts se encontram no arquivo **banco_de_dados.sql**, dentro da pasta **sql**, na raiz do repositório
-    - **obs2:** Os scripts devem ser executados **um por vez**, na sequência em que aparecem no arquivo   
-13. Executar o projeto (escolher a opção **Run on Server**)
-14. Abrir uma janela do navegador e digitar a url: **localhost:8080/fg/**
+Você precisa ter o Java e o Maven instalados e configurados localmente.
 
-**Muito difícil?**<br>
-Nesse caso assista ao vídeo de divulgação do projeto e conheça tudo sem instalar absolutamente nada: <br>
-<https://www.youtube.com/watch?v=5M9K9McJ3zg>
+Abra a **helpdesk-restful-api** em sua IDE favorita como um **Maven Project** e execute o projeto como **Spring Boot Application**.
