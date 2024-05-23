@@ -14,7 +14,7 @@ Além dos **perfis de usuário** a aplicação possui dois **perfis de inicializ
 O projeto possui **testes de unidade** detalhados, além de uma **carga inicial de dados de teste** que permitem facilmente testar no **Postman**, assim que a aplicação é inicializada.
 
 Para maiores informações, visite a página oficial do projeto: <br>
-<www.togtec.com.br/projetos/helpdesk-restful-api/resumo.php>
+<https://www.togtec.com.br/projetos/helpdesk-restful-api/resumo.php>
 
 ## Tecnologias
   * Java SE (17)
