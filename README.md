@@ -14,7 +14,7 @@ Além dos **perfis de usuário** a aplicação possui dois **perfis de inicializ
 O projeto possui **testes de unidade** detalhados, além de uma **carga inicial de dados de teste** que permitem facilmente testar no **Postman**, assim que a aplicação é inicializada.
 
 Para maiores informações, visite a página oficial do projeto: <br>
-<https://www.togtec.com.br/projetos/helpdesk-restful-api/resumo.php>
+<www.togtec.com.br/projetos/helpdesk-restful-api/resumo.php>
 
 ## Tecnologias
   * Java SE (17)
@@ -34,7 +34,7 @@ Para maiores informações, visite a página oficial do projeto: <br>
 </p>
 
 Ver galeria completa de imagens em: <br>
-<https://www.togtec.com.br/projetos/helpdesk-restful-api/imagens.php>
+<www.togtec.com.br/projetos/helpdesk-restful-api/imagens.php>
 
 ## Tratamento de Exceção
 A HelpDesk RESTful API é uma joia do tratamento de exceção, que em caso de erro informa o **código de retorno, o tipo do erro, a descrição do erro e os atributos preenchidos de forma inválida**:
