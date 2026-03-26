@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -51,24 +52,26 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            // permite a visualização dos paineis internos da console do H2
-            http.headers((headers) -> headers
-                    .frameOptions((frameOptions) -> frameOptions
-                            .disable()));
-        }
-
         // permite requisições POST, PUT, DELETE e acesso à console do H2
         http.csrf(AbstractHttpConfigurer::disable);
-
         http.cors(Customizer.withDefaults());
 
-        http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers(PathRequest.toH2Console()).permitAll()                
-                .requestMatchers("/login", "/clientes").permitAll()
+        // H2 console only for test profile
+        if (env.acceptsProfiles(Profiles.of("test"))) {
+            // permite a visualização dos paineis internos da console do H2
+            http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+        }        
+        
+        http.authorizeHttpRequests(auth -> {
+            if (env.acceptsProfiles(Profiles.of("test"))) {
+                auth.requestMatchers(PathRequest.toH2Console()).permitAll();
+            }
+
+            // always permitted endpoints
+                auth.requestMatchers("/login", "/clientes").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated() // requisições não autenticadas são bloqueadas
-        );
+                .anyRequest().authenticated();
+            });
 
         // servidor deixa de enviar cookies JSESSIONID
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

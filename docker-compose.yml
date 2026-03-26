@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: helpdeskDB
+      MYSQL_USER: helpdeskUser
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: super
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: togtec/helpdesk-rest-api:latest
+    container_name: helpdesk-rest-api
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/helpdeskDB
+      SPRING_DATASOURCE_USERNAME: helpdeskUser
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:
