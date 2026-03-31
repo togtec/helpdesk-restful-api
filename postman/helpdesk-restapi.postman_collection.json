@@ -1,0 +1,1655 @@
+{
+  "info": {
+    "_postman_id": "9b26a7aa-b749-44cc-8fa1-1f6eee9fb3b8",
+    "name": "HelpDesk RESTful API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28811232"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "login_admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var token = responseBody;\r",
+                  "//console.log(token)\r",
+                  "pm.collectionVariables.set(\"token\", token);\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"tog@gmail.com\", //Rodrigo\r\n    \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login_tecnico",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var token = responseBody;\r",
+                  "//console.log(token)\r",
+                  "pm.collectionVariables.set(\"token\", token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"prilopez@gmail.com\", //Priscila Lopez\r\n    \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login_cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var token = responseBody;\r",
+                  "//console.log(token)\r",
+                  "pm.collectionVariables.set(\"token\", token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"flaviosp@bol.com.br\", //Flavio Sampaio\r\n    \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cliente",
+      "item": [
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Expected 201\", function() {\r",
+                  "    pm.response.to.have.status(201)\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Aline Bastos\",\r\n    \"cpf\": \"645.410.840-66\",\r\n    \"email\": \"alinebastos@gmail.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_With-InvalidData",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Expected 422\", function() {\r",
+                  "    pm.response.to.have.status(422)\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"\",\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"senha\": \"\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "create_With-InvalidData",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"\",\r\n    \"cpf\": \"645.410.840-66\",\r\n    \"email\": \"alinebastos@gmail.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/clientes",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clientes"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Method"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Headers"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-XSS-Protection",
+                  "value": "0"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "Pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "Expires",
+                  "value": "0"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 02 Mar 2024 16:58:59 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"timestamp\": \"2024-03-02T16:58:59.426+00:00\",\n    \"status\": 422,\n    \"error\": \"UNPROCESSABLE_ENTITY\",\n    \"message\": \"Erro na validação dos campos\",\n    \"path\": \"/clientes\",\n    \"errors\": [\n        {\n            \"fieldName\": \"nome\",\n            \"defaultMessage\": \"O campo NOME é de preenchimento obrigatório!\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "create_With_ExistingCpf",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Pedro Bosco\", \r\n    \"cpf\": \"111.661.890-74\", //Alessandra Lima\r\n    \"email\": \"pedrobosco@gmail.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_With_ExistingEmail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Pedro Bosco\",\r\n    \"cpf\": \"615.438.452-15\",\r\n    \"email\": \"alelima@gmail.com\", //Alessandra Lima\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes/11",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findBy_NotExistingId",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes/100",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "100"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Aline da Silva Bastos\",\r\n    \"cpf\": \"645.410.840-66\",\r\n    \"email\": \"alinebastos@bol.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/11",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withInvalidData",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"\",\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"senha\": \"\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withNotExistingID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Aline da Silva Bastos\",\r\n    \"cpf\": \"645.410.840-66\",\r\n    \"email\": \"alinebastos@bol.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withCpfFromOtherPerson",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Sabrina Coral\",\r\n    \"cpf\": \"177.409.680-30\", //cpf do Paulo Cintra\r\n    \"email\": \"sabcoral@gmail.com\",\r\n    \"senha\": \"123456\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withEmailFromOtherPerson",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Sabrina Coral\",\r\n    \"cpf\": \"081.399.300-83\",\r\n    \"email\": \"paulo.cintra@globo.com\", //email do Paulo Cintra\r\n    \"senha\": \"123456\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes/11",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_WithNotExistingId",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_WithExistingServiceOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/clientes/6",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "clientes",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tecnico",
+      "item": [
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Juliana da Mata\",\r\n    \"cpf\": \"213.279.120-15\",\r\n    \"email\": \"juliana@mail.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_WithInvalidData",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"\",\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"senha\": \"\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_With_ExistingCpf",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Salvador da Silva\",\r\n    \"cpf\": \"550.482.150-95\", //cpf do Rodrigo\r\n    \"email\": \"salvadorsilva@gmail.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_With_ExistingEmail",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Salvador da Silva\",\r\n    \"cpf\": \"883.033.490-15\",\r\n    \"email\": \"tog@gmail.com\", //email do Rodrigo\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findByNotExistingId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function() {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Priscila Lopez\",\r\n    \"cpf\": \"903.347.070-56\",\r\n    \"email\": \"prilopez@bol.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withInvalidData",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"\",\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"senha\": \"\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withNotExistingID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Priscila Lopez\",\r\n    \"cpf\": \"903.347.070-56\",\r\n    \"email\": \"prilopez@bol.com\",\r\n    \"senha\": \"1234\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withCpfFromOtherPerson",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Rodrigo Tognetta Modificado\",\r\n    \"cpf\": \"271.068.470-54\", //cpf do Alexandre Sanches\r\n    \"email\": \"tog@mail.com\",\r\n    \"senha\": \"123456\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withEmailFromOtherPerson",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Rodrigo Tognetta Modificado\",\r\n    \"cpf\": \"550.482.150-95\",\r\n    \"email\": \"alesanches@gmail.com\", //Alexandre Sanches\r\n    \"senha\": \"123456\",\r\n    \"perfis\": [0, 1, 2],\r\n    \"dataCriacao\": \"01/01/2050\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/tecnicos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos/12",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "12"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteWithNotExistingId",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteWithExistingServiceOrder",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tecnicos/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tecnicos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chamado",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 1,\r\n  \"dataAbertura\": \"01/01/2050\",\r\n  \"dataFechamento\": \"02/01/2050\",\r\n  \"prioridade\": 0,\r\n  \"status\": 0,\r\n  \"titulo\": \"Sem sinal de internet\",\r\n  \"observacoes\": \"Cliente sem sinal de internet. Caminhão alto quebrou o cabo. Equipe de reparo à caminho.\",\r\n  \"cliente\": 6,\r\n  \"tecnico\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/chamados",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_withInvalidData",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 1,\r\n  \"dataAbertura\": \"01/01/2050\",\r\n  \"dataFechamento\": \"02/01/2050\",\r\n  \"prioridade\": null,\r\n  \"status\": null,\r\n  \"titulo\": \"\",\r\n  \"observacoes\": \"\",\r\n  \"cliente\": null,\r\n  \"tecnico\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/chamados",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chamados/7",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById_ByNotExistingId",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chamados/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chamados",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 1,\r\n  \"dataAbertura\": \"01/01/2050\",\r\n  \"dataFechamento\": \"02/01/2050\",\r\n  \"prioridade\": 0,\r\n  \"status\": 2, //encerrado\r\n  \"titulo\": \"Sem sinal de internet\",\r\n  \"observacoes\": \"Cliente sem sinal de internet. Caminhão alto quebrou o cabo. Reparo realizado hoje as 14:00 hrs.\",\r\n  \"cliente\": 6,\r\n  \"tecnico\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/chamados/7",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withInvalidData",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 1,\r\n  \"dataAbertura\": \"01/01/2050\",\r\n  \"dataFechamento\": \"02/01/2050\",\r\n  \"prioridade\": 0,\r\n  \"status\": 2, //encerrado\r\n  \"titulo\": \"\",\r\n  \"observacoes\": \"\",\r\n  \"cliente\": null,\r\n  \"tecnico\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/chamados/6",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_withNotExistingID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 1,\r\n  \"dataAbertura\": \"01/01/2050\",\r\n  \"dataFechamento\": \"02/01/2050\",\r\n  \"prioridade\": 0,\r\n  \"status\": 2, //encerrado\r\n  \"titulo\": \"Sem sinal de internet\",\r\n  \"observacoes\": \"Cliente sem sinal de internet. Caminhão alto quebrou o cabo. Reparo realizado hoje as 14:00 hrs.\",\r\n  \"cliente\": 6,\r\n  \"tecnico\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/chamados/99",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "chamados",
+                "99"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
