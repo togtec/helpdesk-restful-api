@@ -68,9 +68,22 @@ public class SecurityConfig {
             }
 
             // always permitted endpoints
-                auth.requestMatchers("/login", "/clientes").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated();
+            auth
+            .requestMatchers(
+                "/login",
+                             "/clientes")
+            .permitAll()
+            .requestMatchers(
+                "/v3/api-docs/**",
+                             "/swagger-ui/**",
+                             "/swagger-ui.html"
+            ).permitAll()
+            .requestMatchers(
+                "/actuator/health",
+                             "/actuator/health/liveness",
+                             "/actuator/health/readiness"
+            ).permitAll()
+            .anyRequest().authenticated();
             });
 
         // servidor deixa de enviar cookies JSESSIONID
