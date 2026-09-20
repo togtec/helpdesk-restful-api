@@ -31,3 +31,13 @@ jobs:
 
       - name: Executar testes e build
         run: ./mvnw clean verify
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build da imagem Docker
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          tags: helpdesk:ci
