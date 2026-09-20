@@ -39,5 +39,15 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
+          load: true
           push: false
           tags: helpdesk:ci
+
+      - name: Exportar imagem Docker
+        run: docker save helpdesk:ci -o helpdesk-ci.tar
+
+      - name: Disponibilizar imagem para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: helpdesk-docker-image
+          path: helpdesk-ci.tar
