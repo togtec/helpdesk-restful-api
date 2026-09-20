@@ -81,7 +81,8 @@ public class SecurityConfig {
             .requestMatchers(
                 "/actuator/health",
                              "/actuator/health/liveness",
-                             "/actuator/health/readiness"
+                             "/actuator/health/readiness",
+                             "/actuator/info"
             ).permitAll()
             .anyRequest().authenticated();
             });

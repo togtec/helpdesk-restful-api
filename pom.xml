@@ -9,11 +9,11 @@
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.rodrigo</groupId>
-    <artifactId>c1.helpdesk</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>c1.helpdesk</name>
-    <description>Demo project for Spring Boot</description>
+    <groupId>br.com.togtec</groupId>
+    <artifactId>helpdesk-restful-api</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>API de Gerenciamento de Chamados</name>
+    <description>API de Gerenciamento de Chamados com Spring Boot, autenticação com Spring Security e autorização com OAuth2.</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -70,11 +70,35 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <build>        
         <plugins>
+            <!-- Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>                
+            </plugin>
+
+            <!-- Git information -->
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.2</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
