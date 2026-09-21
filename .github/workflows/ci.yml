@@ -15,8 +15,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      REGISTRY: ${{ secrets.MGC_REGISTRY_REGION }}
-      REGISTRY_NAME: ${{ secrets.MGC_REGISTRY_NAME }}    
+      REGISTRY: container-registry.br-se1.magalu.cloud
+      REGISTRY_NAME: togtec
 
     steps:
       - name: Checkout do código
