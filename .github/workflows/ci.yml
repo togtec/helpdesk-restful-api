@@ -14,6 +14,9 @@ permissions:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ${{ secrets.MGC_REGISTRY_REGION }}
+      REGISTRY_NAME: ${{ secrets.MGC_REGISTRY_NAME }}    
 
     steps:
       - name: Checkout do código
@@ -37,10 +40,7 @@ jobs:
 
       - name: Gerar metadados da imagem
         id: meta
-        uses: docker/metadata-action@v5
-        env:
-          REGISTRY: ${{ secrets.MGC_REGISTRY_REGION }}
-          REGISTRY_NAME: ${{ secrets.MGC_REGISTRY_NAME }}        
+        uses: docker/metadata-action@v5      
         with:
           images: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/helpdesk
           tags: |
