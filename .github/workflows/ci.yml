@@ -49,7 +49,7 @@ jobs:
       - name: Login no Magalu Cloud Container Registry
         uses: docker/login-action@v4
         with:
-          registry: ${{ secrets.MGC_REGISTRY_REGION }}
+          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.MGC_REGISTRY_USER }}
           password: ${{ secrets.MGC_REGISTRY_PASSWORD }}
 
