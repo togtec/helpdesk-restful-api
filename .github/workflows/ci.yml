@@ -35,19 +35,32 @@ jobs:
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v4
 
-      - name: Build da imagem Docker
+      - name: Gerar metadados da imagem
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.MGC_REGISTRY_REGION }}/${{ secrets.MGC_REGISTRY_NAME }}/helpdesk
+          tags: |
+            type=sha,format=short
+
+      - name: Login no Magalu Cloud Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ secrets.MGC_REGISTRY_REGION }}
+          username: ${{ secrets.MGC_REGISTRY_USER }}
+          password: ${{ secrets.MGC_REGISTRY_PASSWORD }}
+
+      - name: Build e push da imagem Docker
+        id: push
         uses: docker/build-push-action@v7
         with:
           context: .
-          load: true
-          push: false
-          tags: helpdesk:ci
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Exportar imagem Docker
-        run: docker save helpdesk:ci -o helpdesk-ci.tar
-
-      - name: Disponibilizar imagem para download
-        uses: actions/upload-artifact@v4
-        with:
-          name: helpdesk-docker-image
-          path: helpdesk-ci.tar
+      - name: Resumo da imagem publicada
+        run: |
+          echo "### Imagem Docker publicada :rocket:" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Imagem: ${{ steps.meta.outputs.tags }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Digest: ${{ steps.push.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"
