@@ -38,8 +38,11 @@ jobs:
       - name: Gerar metadados da imagem
         id: meta
         uses: docker/metadata-action@v5
+        env:
+          REGISTRY: ${{ secrets.MGC_REGISTRY_REGION }}
+          REGISTRY_NAME: ${{ secrets.MGC_REGISTRY_NAME }}        
         with:
-          images: ${{ secrets.MGC_REGISTRY_REGION }}/${{ secrets.MGC_REGISTRY_NAME }}/helpdesk
+          images: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/helpdesk
           tags: |
             type=sha,format=short
 
