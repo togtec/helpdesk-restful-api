@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helpdesk
+  namespace: helpdesk
+  labels:
+    app: helpdesk
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: helpdesk
+
+  template:
+    metadata:
+      labels:
+        app: helpdesk
+
+    spec:
+      imagePullSecrets:
+      - name: magalu-registry-secret
+    
+      containers:
+        - name: helpdesk
+          image: container-registry.br-se1.magalu.cloud/togtec/helpdesk:sha-f72b8ff
+
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            failureThreshold: 12
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
