@@ -14,14 +14,18 @@ permissions:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     env:
       REGISTRY: container-registry.br-se1.magalu.cloud
       REGISTRY_NAME: togtec
 
     steps:
+      # copia o código do repositório para o runner do GitHub Actions
       - name: Checkout do código
         uses: actions/checkout@v6
 
+      # instala o Java 17 usando a distribuição Temurin
+      # e ativa o cache do Maven para acelerar o processo
       - name: Configurar Java
         uses: actions/setup-java@v6
         with:
@@ -29,31 +33,53 @@ jobs:
           java-version: '17'
           cache: maven
 
+      # dá permissão de execução ao Maven Wrapper (mvnw)
       - name: Dar permissão ao Maven Wrapper
         run: chmod +x mvnw
 
+      # limpa os artefatos anteriores (clean) e executa o build
+      # até a fase verify, incluindo compilação e testes
       - name: Executar testes e build
         run: ./mvnw clean verify
 
+      # configura o Docker Buildx para construir imagens de container
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v4
 
+      # gera as tags e os labels da imagem Docker
       - name: Gerar metadados da imagem
         id: meta
-        uses: docker/metadata-action@v5      
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/helpdesk
           tags: |
             type=sha,format=short
 
+      # Executado quando o workflow é acionado por um Pull Request.
+      # A imagem é construída, mas não é enviada ao Registry.
+      - name: Build da imagem Docker
+        if: github.event_name == 'pull_request'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # Executado somente depois de um push na main.
+      # Faz login no Container Registry da Magalu Cloud.
       - name: Login no Magalu Cloud Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.MGC_REGISTRY_USER }}
           password: ${{ secrets.MGC_REGISTRY_PASSWORD }}
 
+      # Executado somente depois de um push na main.
+      # Constrói e publica a imagem no Container Registry.
       - name: Build e push da imagem Docker
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: push
         uses: docker/build-push-action@v7
         with:
@@ -62,7 +88,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      # Executado somente depois de um push na main.
+      # Exibe a imagem publicada e seu digest.
       - name: Resumo da imagem publicada
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           echo "### Imagem Docker publicada :rocket:" >> "$GITHUB_STEP_SUMMARY"
           echo "- Imagem: ${{ steps.meta.outputs.tags }}" >> "$GITHUB_STEP_SUMMARY"
