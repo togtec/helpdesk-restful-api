@@ -76,23 +76,29 @@ jobs:
           username: ${{ secrets.MGC_REGISTRY_USER }}
           password: ${{ secrets.MGC_REGISTRY_PASSWORD }}
 
-
-          
+      # Executado somente depois de um push na main.
+      # Cria o diretório de configuração do kubectl no runner do GitHub Actions.
+      # Recupera o kubeconfig armazenado no Secret K8S_KUBECONFIG
+      # e o salva temporariamente no arquivo ~/.kube/config.
+      # O arquivo recebe permissão 600 para que somente o usuário do runner possa acessá-lo. 
       - name: Configurar acesso ao Kubernetes
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p ~/.kube
           echo "${{ secrets.K8S_KUBECONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
-
+          
+        # Executado somente depois de um push na main.
+        # Verifica se o GitHub Actions consegue se comunicar com o cluster Kubernetes
+        # e acessar o namespace helpdesk usando as credenciais configuradas.
+        # Também verifica se o ServiceAccount possui permissão para alterar Deployments,
+        # que será necessária posteriormente para atualizar a imagem da aplicação.
       - name: Testar acesso ao Kubernetes
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           kubectl get pods --namespace helpdesk
           kubectl auth can-i patch deployments --namespace helpdesk
 
-
-          
       # Executado somente depois de um push na main.
       # Constrói e publica a imagem no Container Registry.
       - name: Build e push da imagem Docker
@@ -104,6 +110,26 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+        # Executado somente depois de um push na main.
+        # Atualiza o Deployment no Kubernetes para utilizar a nova imagem Docker
+        # que acabou de ser publicada no Container Registry.    
+      - name: Atualizar imagem no Kubernetes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          kubectl set image deployment/helpdesk \
+            helpdesk=${{ steps.meta.outputs.tags }} \
+            --namespace helpdesk
+            
+      # Executado somente depois de um push na main.
+      # Aguarda o Kubernetes concluir o rollout do Deployment.
+      # O workflow falha se o novo Deployment não for concluído dentro de 120 segundos.
+      - name: Aguardar rollout
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          kubectl rollout status deployment/helpdesk \
+            --namespace helpdesk \
+            --timeout=120s
 
       # Executado somente depois de um push na main.
       # Exibe a imagem publicada e seu digest.

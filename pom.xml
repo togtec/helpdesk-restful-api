@@ -11,7 +11,7 @@
     </parent>
     <groupId>br.com.togtec</groupId>
     <artifactId>helpdesk-restful-api</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>API de Gerenciamento de Chamados</name>
     <description>API de Gerenciamento de Chamados com Spring Boot, autenticação com Spring Security e autorização com OAuth2.</description>
     <properties>
