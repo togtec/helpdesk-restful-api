@@ -76,6 +76,23 @@ jobs:
           username: ${{ secrets.MGC_REGISTRY_USER }}
           password: ${{ secrets.MGC_REGISTRY_PASSWORD }}
 
+
+          
+      - name: Configurar acesso ao Kubernetes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.K8S_KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Testar acesso ao Kubernetes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          kubectl get pods --namespace helpdesk
+          kubectl auth can-i patch deployments --namespace helpdesk
+
+
+          
       # Executado somente depois de um push na main.
       # Constrói e publica a imagem no Container Registry.
       - name: Build e push da imagem Docker
