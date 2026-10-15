@@ -82,7 +82,7 @@
                             <goal>build-info</goal>
                         </goals>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
 
             <!-- Git information -->
